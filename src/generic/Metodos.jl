@@ -1,5 +1,6 @@
 export monte_carlo, wang_landau, densidad_exacta, positive
 export Simulacion, crear_matriz, new_mc
+export matriz_rutas, reduccion_transitiva
 import Statistics: mean
 import Combinatorics: permutations
 
@@ -217,6 +218,45 @@ end
 positive(x::T) where T<:Real = x > 0
 ################################################################################
 #                                                                              #
+#                                Reduccion transitiva                          #
+#                                                                              #
+################################################################################
+#source https://github.com/lucasrabiec/TransitiveAlgorithms/blob/master/src/TransitiveAlgorithms/Reduction.cs
+function matriz_rutas(mat::Array{T,2}) where T <: Integer
+    path_matrix = deepcopy(mat)
+    n,n = size(mat)
+    for i in 1:n, j in 1:n
+        if i == j
+            continue
+        end
+        if path_matrix[j,i] > 0
+            for k in 1:n
+                if path_matrix[j,k] == 0
+                    path_matrix[j,k] = path_matrix[i,k]
+                end
+            end
+        end
+    end
+    path_matrix
+end
+
+function reduccion_transitiva(mat::Array{T,2}) where T <: Integer
+    mat_red = deepcopy(mat)
+    n,n = size(mat)
+
+    for i in 1:n, j in 1:n
+        if mat_red[j,i] > 0
+            for k in 1:n
+                if mat_red[i,k] > 0
+                    mat_red[j,k] = 0
+                end
+            end
+        end
+    end
+    mat_red
+end
+################################################################################
+#                                                                              #
 #                                Nuevo MonteCarlo                              #
 #                                                                              #
 ################################################################################
@@ -264,6 +304,7 @@ function new_mc(lista_rankings, sim::Simulacion)
   numero_nodos = lista_rankings[1] |> length
   
   distancias = crear_matriz(lista_rankings)#zeros(Int, (numero_nodos, numero_nodos))
+  original = deepcopy(distancias)
 
   rank_paso = deepcopy(distancias)
   while (t<=tmax)
