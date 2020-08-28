@@ -1,5 +1,5 @@
 export monte_carlo, wang_landau, densidad_exacta, positive
-export Simulacion, crear_matriz
+export Simulacion, crear_matriz, new_mc
 import Statistics: mean
 import Combinatorics: permutations
 
@@ -251,12 +251,54 @@ function crear_matriz(lista_ranks_ordenados::Array{Array{T, 1}, 1}) where T <: I
 end
 
 
-function new_mc(lista_rankings)
+function new_mc(lista_rankings, sim::Simulacion)
+  t = 0.
+  tmax = sim.tmax
+  problarge = sim.problarge
+  tdiscard = sim.tdiscard
+  ntprint = sim.ntprint
+  dtprint = sim.dtprint
+  jprint = sim.jprint
+  tprint = [tdiscard + l*dtprint for l in 1:ntprint]
+
   numero_nodos = lista_rankings[1] |> length
   
-  distancias = zeros(Int, (numero_nodos, numero_nodos))
+  distancias = crear_matriz(lista_rankings)#zeros(Int, (numero_nodos, numero_nodos))
 
-  rank_salto = 1:numero_nodos |> collect
+  rank_paso = deepcopy(distancias)
+  while (t<=tmax)
+    ind = rand(1:numero_nodos-1)
+    prob = rand()
 
+    if prob <= problarge
+      ind1 = rand(ind+1:numero_nodos)
+    else
+      ind1 = ind+1
+    end
+    # energia es la suma de las diferencias
+    # entre las energias del ranking volteado
+    # y el viejo
+    rank_paso[ind, ind1] += 1
+     energia = norma_matrices(rank_paso)
+               - norma_matrices(distancias)
+    #
 
+#    v = var[ind:ind1]
+#    temp = [tab1[f21(v[i], v[i+1], numero_nodos)] for i in 1:length(v)-1] 
+#    energia = temp |> sum 
+    delte = sim.beta*energia
+    prob = rand()
+
+    if delte <= 0. || prob <= exp(-delte)
+#      var[ind] = v[end]
+#      var[ind1] = v[1]
+      distancias = rank_paso
+    end
+
+    t = t+1.0/numero_nodos
+    if t-tdiscard >= tprint[jprint]
+      jprint += 1
+    end
+  end
+  distancias
 end

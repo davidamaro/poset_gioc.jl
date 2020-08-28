@@ -1,7 +1,7 @@
 import Primes: prime
 export energia_por_pasos_p, energia_adhoc, energia_adecuada
 export energia_no_local, energia_trucada, energia_por_pasos
-export energia_por_pasos_p
+export energia_por_pasos_p, norma_matrices
 
 function energia_interna_posets(numero_nodos,numero_ranks,S)
   exponent = 0.0      
@@ -399,4 +399,8 @@ end
 
 function energia_por_pasos_p(ranking_b::Array{T,1}, ranking_r_ord::Array{Array{T,1}, 1}) where T <: Integer
   sum((x -> energia_por_pasos(ranking_b, x)).(ranking_r_ord))
+end
+
+function norma_matrices(mat::Array{T,2}) where T <: Integer
+  sum(mat.*mat) |> sqrt
 end
