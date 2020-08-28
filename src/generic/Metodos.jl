@@ -1,5 +1,5 @@
 export monte_carlo, wang_landau, densidad_exacta, positive
-export Simulacion
+export Simulacion, crear_matriz
 import Statistics: mean
 import Combinatorics: permutations
 
@@ -220,11 +220,43 @@ positive(x::T) where T<:Real = x > 0
 #                                Nuevo MonteCarlo                              #
 #                                                                              #
 ################################################################################
+function crear_matriz(orden::Array{T,1}) where T <: Integer
+  n = orden |> length
+  mat = zeros(Int, (n,n))
+  natural = 1:n |> collect
+
+  for i in 1:n, j in i+1:n
+    tmp = natural[orden]
+    mat[tmp[i], tmp[j]] += 1
+  end
+
+  mat
+end
+
+function crear_matriz(lista_ranks_ordenados::Array{Array{T, 1}, 1}) where T <: Integer
+  n = lista_ranks_ordenados[1] |> length
+  mat = zeros(Int, (n,n))
+  natural = 1:n |> collect
+  for orden in lista_ranks_ordenados
+    tmp = natural[orden]
+    for i in 1:n-1, j in i+1:n
+      mat[tmp[i], tmp[j]] = 1
+      if mat[tmp[i], tmp[j]] > 0 && mat[tmp[j],tmp[i]] > 0
+        mat[tmp[i],tmp[j]] = 0
+        mat[tmp[j],tmp[i]] = 0
+      end
+    end
+  end
+  mat
+end
+
+
 function new_mc(lista_rankings)
   numero_nodos = lista_rankings[1] |> length
   
   distancias = zeros(Int, (numero_nodos, numero_nodos))
 
   rank_salto = 1:numero_nodos |> collect
+
 
 end
