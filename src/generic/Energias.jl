@@ -256,6 +256,17 @@ function energia_adecuada(ranking_test, rankings_ordenados; mt = false)
   suma
 end
 
+function energia_no_local(ranking_test, matriz::Array{Int,2}; mt = false)
+  len = length(ranking_test)
+  suma = 0
+  for i in 1:len-1, j in i+1:len
+      if (matriz[ranking_test[j], ranking_test[i]] > 0)
+          suma += 1
+      end
+  end
+  suma
+end
+
 function energia_no_local(rank::Array{Int64,1}, orden::Array{Int64,1}; mt = false)
     total = 0
     n = rank |> length

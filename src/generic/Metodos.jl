@@ -93,7 +93,7 @@ function monte_carlo(lista_ranks_ordenados,sim::Simulacion)
     if t-tdiscard >= tprint[jprint]
       jprint += 1
       for k in 1:numero_nodos^2
-        l1, l2 = f12(k,numero_nodos)
+        l1, l2 = ind_1d_a_2d(k,numero_nodos)
         if sortperm(var)[l1] < sortperm(var)[l2]
           tabtotal[k] += 1
         end
@@ -215,3 +215,16 @@ end
 #                                                                              #
 ################################################################################
 positive(x::T) where T<:Real = x > 0
+################################################################################
+#                                                                              #
+#                                Nuevo MonteCarlo                              #
+#                                                                              #
+################################################################################
+function new_mc(lista_rankings)
+  numero_nodos = lista_rankings[1] |> length
+  
+  distancias = zeros(Int, (numero_nodos, numero_nodos))
+
+  rank_salto = 1:numero_nodos |> collect
+
+end
