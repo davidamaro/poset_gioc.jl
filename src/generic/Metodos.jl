@@ -279,8 +279,9 @@ function new_mc(lista_rankings, sim::Simulacion)
     # entre las energias del ranking volteado
     # y el viejo
     rank_paso[ind, ind1] += 1
-     energia = norma_matrices(rank_paso)
-               - norma_matrices(distancias)
+    n_paso       = norma_matrices(rank_paso)  + norma_matrices(rank_paso - original)*0.5
+    n_distancias = norma_matrices(distancias) + norma_matrices(distancias - original)*0.5
+    energia = n_paso - n_distancias
     #
 
 #    v = var[ind:ind1]
