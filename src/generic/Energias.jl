@@ -91,7 +91,7 @@ function calcular_tabs_div(rankings, numero_nodos)
   tab = zeros(Int,numero_nodos^2)
   for k in 1:numero_nodos^2
     for l in orden
-      a,b = f12(k,numero_nodos)
+      a,b = ind_1d_a_2d(k,numero_nodos)
       if l[a] + 1 == l[b] 
         tab[k] += 1
       end
@@ -100,13 +100,13 @@ function calcular_tabs_div(rankings, numero_nodos)
 
   tab1 = zeros(Int,numero_nodos^2)
   for k in 1:numero_nodos^2
-    tab1[k] = tab[k]-tab[inv(k,numero_nodos)]
+    tab1[k] = tab[k]-tab[ind_1d_inverso(k,numero_nodos)]
   end
 
   errlist = Int[]
   for k in 1:numero_nodos^2
-    a,b = f12(k,numero_nodos)
-    if tab[k] + tab[inv(k,numero_nodos)] == len || a == b
+    a,b = ind_1d_a_2d(k,numero_nodos)
+    if tab[k] + tab[ind_1d_inverso(k,numero_nodos)] == len || a == b
       continue
     else
       push!(errlist, k)
@@ -121,7 +121,7 @@ end
 function calcular_tabs_energia(rank, tab, numero_nodos)
   suma = 0
   for i in 1:length(rank)-1, j in i+1:length(rank)
-    suma += tab[f21(rank[i], rank[j], numero_nodos)]
+    suma += tab[ind_2d_a_1d(rank[i], rank[j], numero_nodos)]
   end
   suma
 end
@@ -135,7 +135,7 @@ function calcular_tabs(rankings, numero_nodos)
   tab = zeros(Int,numero_nodos^2)
   for k in 1:numero_nodos^2
     for l in orden
-      a,b = f12(k,numero_nodos)
+      a,b = ind_1d_a_2d(k,numero_nodos)
       if l[a] < l[b]
         tab[k] += 1
       end
@@ -144,13 +144,13 @@ function calcular_tabs(rankings, numero_nodos)
 
   tab1 = zeros(Int,numero_nodos^2)
   for k in 1:numero_nodos^2
-    tab1[k] = tab[k]-tab[inv(k,numero_nodos)]
+    tab1[k] = tab[k]-tab[ind_1d_inverso(k,numero_nodos)]
   end
 
   errlist = Int[]
   for k in 1:numero_nodos^2
-    a,b = f12(k,numero_nodos)
-    if tab[k] + tab[inv(k,numero_nodos)] == len || a == b
+    a,b = ind_1d_a_2d(k,numero_nodos)
+    if tab[k] + tab[ind_1d_inverso(k,numero_nodos)] == len || a == b
       continue
     else
       push!(errlist, k)
@@ -163,17 +163,17 @@ function calcular_tabs(rankings, numero_nodos)
 end
 
 
-function f12(i, numero_nodos)
+function ind_1d_a_2d(i, numero_nodos)
   Int(floor((i-1)/numero_nodos)+1), 1+mod(i-1,numero_nodos)
 end
 
-function f21(i,j,numero_nodos) 
+function ind_2d_a_1d(i,j,numero_nodos) 
   (i-1)*numero_nodos+ j
 end
 
-function inv(k, numero_nodos)
-  a,b = f12(k,numero_nodos)
-  f21(b,a,numero_nodos)
+function ind_1d_inverso(k, numero_nodos)
+  a,b = ind_1d_a_2d(k,numero_nodos)
+  ind_2d_a_1d(b,a,numero_nodos)
 end
 
 function energia_individual_inicial(rank, rankings, numero_nodos)
