@@ -8,7 +8,6 @@ using Combinatorics
 using Markdown
 using Primes
 
-#Base.include(Main, "Generic.jl")
 include("Generic.jl")
 
 import .Generic:  energia_por_pasos_p, energia_adhoc, energia_adecuada,
