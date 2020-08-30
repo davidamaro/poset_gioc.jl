@@ -241,7 +241,7 @@ function matriz_rutas(mat::Array{T,2}) where T <: Integer
 end
 
 function reduccion_transitiva(mat::Array{T,2}) where T <: Integer
-    mat_red = deepcopy(mat)
+    mat_red = mat |> matriz_rutas
     n,n = size(mat)
 
     for i in 1:n, j in 1:n
@@ -303,25 +303,26 @@ function new_mc(lista_rankings, sim::Simulacion)
 
   numero_nodos = lista_rankings[1] |> length
   
-  distancias = crear_matriz(lista_rankings)#zeros(Int, (numero_nodos, numero_nodos))
+  distancias = crear_matriz(lista_rankings) |> reduccion_transitiva#zeros(Int, (numero_nodos, numero_nodos))
   original = deepcopy(distancias)
 
   rank_paso = deepcopy(distancias)
   while (t<=tmax)
     ind = rand(1:numero_nodos-1)
+    ind1 = rand(filter(x -> x != ind, 1:numero_nodos|>collect))
     prob = rand()
 
-    if prob <= problarge
-      ind1 = rand(ind+1:numero_nodos)
-    else
-      ind1 = ind+1
-    end
+#    if prob <= problarge
+#      ind1 = rand(ind+1:numero_nodos)
+#    else
+#      ind1 = ind+1
+#    end
     # energia es la suma de las diferencias
     # entre las energias del ranking volteado
     # y el viejo
     rank_paso[ind, ind1] += 1
-    n_paso       = norma_matrices(rank_paso)  + norma_matrices(rank_paso - original)*0.5
-    n_distancias = norma_matrices(distancias) + norma_matrices(distancias - original)*0.5
+    n_paso       = norma_matrices(rank_paso |> reduccion_transitiva)  + norma_matrices(rank_paso - original)*0.5
+    n_distancias = norma_matrices(distancias |> reduccion_transitiva) + norma_matrices(distancias - original)*0.5
     energia = n_paso - n_distancias
     #
 
