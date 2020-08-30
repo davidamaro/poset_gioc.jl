@@ -3,6 +3,18 @@ export Simulacion, crear_matriz, new_mc
 export matriz_rutas, reduccion_transitiva
 import Statistics: mean
 import Combinatorics: permutations
+import Base.+
+
+function +(a::Array{Int64,2},b::Tuple{Int64,Int64})
+    x,y = b
+    if a[y,x] == 0
+        a[x,y] += 1
+    else
+        a[x,y] = 0
+        a[y,x] = 0
+    end
+    a
+end
 
 @doc Markdown.doc"""
     energia_por_pasos_p(ranking_test, rankings_ordenados; mt = false)
@@ -198,14 +210,26 @@ end
 # Ejemplos:
 ```
 dens = densidad_exacta(sortperm.([[1,2,3,4,5], [5,1,3,4,2]]), 17, energia_por_pasos_p)
+dens = densidad_exacta(matriz_poset, 17, energia_por_pasos_p)
 ```
 """
 function densidad_exacta(lista_ranks_ordenados::Array{Array{T,1},1},max::T,metodo::Function) where T<:Integer
-  limite = lista_ranks_ordenados |> first |> length
+  num_objetos = lista_ranks_ordenados |> first |> length
   len = length(lista_ranks_ordenados)
   densidad = zeros(T,len*max);
-  for i in permutations(1:limite)
+  for i in permutations(1:num_objetos)
       ener = metodo(collect(i), lista_ranks_ordenados)
+      densidad[ener+1] += 1
+  end
+  densidad
+end
+
+function densidad_exacta(matriz_poset::Array{T,2},max::T,metodo::Function) where T<:Integer
+  num_objetos,num_objetos  = matriz_poset |> size
+  densidad = zeros(T,num_objetos*max);
+  matriz_poset_ruta = matriz_poset |> matriz_rutas
+  for i in permutations(1:num_objetos)
+      ener = metodo(collect(i), matriz_poset_ruta)
       densidad[ener+1] += 1
   end
   densidad
@@ -303,38 +327,25 @@ function new_mc(lista_rankings, sim::Simulacion)
 
   numero_nodos = lista_rankings[1] |> length
   
-  distancias = crear_matriz(lista_rankings) |> reduccion_transitiva#zeros(Int, (numero_nodos, numero_nodos))
+  distancias = crear_matriz(lista_rankings) |> reduccion_transitiva
   original = deepcopy(distancias)
 
   rank_paso = deepcopy(distancias)
   while (t<=tmax)
     ind = rand(1:numero_nodos-1)
     ind1 = rand(filter(x -> x != ind, 1:numero_nodos|>collect))
-    prob = rand()
+    @show ind, ind1
 
-#    if prob <= problarge
-#      ind1 = rand(ind+1:numero_nodos)
-#    else
-#      ind1 = ind+1
-#    end
-    # energia es la suma de las diferencias
-    # entre las energias del ranking volteado
-    # y el viejo
-    rank_paso[ind, ind1] += 1
-    n_paso       = norma_matrices(rank_paso |> reduccion_transitiva)  + norma_matrices(rank_paso - original)*0.5
-    n_distancias = norma_matrices(distancias |> reduccion_transitiva) + norma_matrices(distancias - original)*0.5
+    #rank_paso[ind, ind1] += 1 # esta adiciones debe ser mas controlada
+    +(rank_paso, (ind,ind1))
+    n_paso       = norma_matrices(rank_paso  |> reduccion_transitiva)  + norma_matrices(reduccion_transitiva(rank_paso)  - original)*numero_nodos
+    n_distancias = norma_matrices(distancias |> reduccion_transitiva) + norma_matrices(reduccion_transitiva(distancias)  - original)*numero_nodos
     energia = n_paso - n_distancias
-    #
 
-#    v = var[ind:ind1]
-#    temp = [tab1[f21(v[i], v[i+1], numero_nodos)] for i in 1:length(v)-1] 
-#    energia = temp |> sum 
     delte = sim.beta*energia
     prob = rand()
 
     if delte <= 0. || prob <= exp(-delte)
-#      var[ind] = v[end]
-#      var[ind1] = v[1]
       distancias = rank_paso
     end
 
