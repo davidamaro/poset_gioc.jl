@@ -3,6 +3,8 @@ export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
 export energia_por_pasos_p, norma_matrices
 
+const Poset = Array{T, 2} where T <: Integer
+
 function energia_interna_posets(numero_nodos,numero_ranks,S)
   exponent = 0.0      
   U = Float64[]
