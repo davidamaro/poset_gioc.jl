@@ -10,7 +10,7 @@ using Primes
 
 include("Generic.jl")
 
-import .Generic:  energia_por_pasos_p, energia_adhoc, energia_adecuada,
+import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   energia_no_local, energia_trucada, energia_por_pasos,
                   energia_por_pasos_p,
                   monte_carlo, wang_landau, Simulacion, densidad_exacta,
@@ -20,7 +20,7 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_adecuada,
                   matriz_rutas, reduccion_transitiva,
                   lista_posets_3, lista_posets_4, lista_posets_5,
                   lista_posets_e_4, lista_posets_e_5, lista_posets_e_6 
-export energia_por_pasos_p, energia_adhoc, energia_adecuada
+export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
 export energia_por_pasos_p
 export monte_carlo, wang_landau, Simulacion, densidad_exacta

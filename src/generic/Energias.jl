@@ -1,5 +1,5 @@
 import Primes: prime
-export energia_por_pasos_p, energia_adhoc, energia_adecuada
+export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
 export energia_por_pasos_p, norma_matrices
 
@@ -227,14 +227,14 @@ function energia_adhoc(rank, rankings_ordenados; mt = false)
 end
 
 @doc Markdown.doc"""
-function energia_adecuada(ranking_test, rankings_ordenados; mt = false)
+function energia_local(ranking_test, rankings_ordenados; mt = false)
 Ejemplo
 ```
-julia > energia_adecuada([3,1,2,4,5], sortperm.([[1,2,3,4,5], [1,2,4,5,3]]), mt = true)
+julia > energia_local([3,1,2,4,5], sortperm.([[1,2,3,4,5], [1,2,4,5,3]]), mt = true)
 8
 ```
 """
-function energia_adecuada(ranking_test, rankings_ordenados; mt = false)
+function energia_local(ranking_test, rankings_ordenados; mt = false)
   #len = rankings_ordenados[1]|>length
   len = length(ranking_test)
   suma = 0
@@ -255,6 +255,22 @@ function energia_adecuada(ranking_test, rankings_ordenados; mt = false)
         end
     end
   end
+  suma
+end
+
+function energia_local(ranking_test, matriz::Poset)
+  #len = rankings_ordenados[1]|>length
+  len = length(ranking_test)
+  suma = 0
+
+  for r in 1:len-1
+      #if !(matriz[ranking_test[r]] < matriz[ranking_test[r + 1]])
+     # if (matriz[ranking_test[r]] > matriz[ranking_test[r + 1]])
+      if matriz[ranking_test[r + 1], ranking_test[r]] > 0
+          suma += 1
+      end
+  end
+
   suma
 end
 
