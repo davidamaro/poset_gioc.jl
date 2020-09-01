@@ -18,7 +18,8 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_adecuada,
                   SG, apply_filter,
                   crear_matriz, norma_matrices, new_mc,
                   matriz_rutas, reduccion_transitiva,
-                  lista_posets_3, lista_posets_4, lista_posets_5
+                  lista_posets_3, lista_posets_4, lista_posets_5,
+                  lista_posets_e_4, lista_posets_e_5, lista_posets_e_6 
 export energia_por_pasos_p, energia_adhoc, energia_adecuada
 export energia_no_local, energia_trucada, energia_por_pasos
 export energia_por_pasos_p
@@ -28,5 +29,6 @@ export SG, apply_filter
 export crear_matriz, norma_matrices, new_mc
 export matriz_rutas, reduccion_transitiva
 export lista_posets_3, lista_posets_4, lista_posets_5
+export lista_posets_e_4, lista_posets_e_5, lista_posets_e_6 
 
 end #module
