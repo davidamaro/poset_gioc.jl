@@ -1,5 +1,14 @@
 using Posets, Test
 
+@testset "energia local" begin
+    @test energia_local([1,2,3], lista_posets_3[2]) == 0
+    @test energia_local([1,3,2], lista_posets_3[2]) == 0
+    @test energia_local([2,1,3], lista_posets_3[2]) == 1
+    @test energia_local([2,3,1], lista_posets_3[2]) == 0
+    @test energia_local([3,1,2], lista_posets_3[2]) == 0
+    @test energia_local([3,2,1], lista_posets_3[2]) == 1
+end
+
 @testset "energia no local" begin
     @test energia_no_local([1,2,3], sortperm([1,2,3])) == 0
     @test energia_no_local([1,3,2], sortperm([1,2,3])) == 1
