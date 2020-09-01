@@ -229,8 +229,10 @@ end
 @doc Markdown.doc"""
 function energia_adecuada(ranking_test, rankings_ordenados; mt = false)
 Ejemplo
+```
 julia > energia_adecuada([3,1,2,4,5], sortperm.([[1,2,3,4,5], [1,2,4,5,3]]), mt = true)
 8
+```
 """
 function energia_adecuada(ranking_test, rankings_ordenados; mt = false)
   #len = rankings_ordenados[1]|>length
@@ -256,6 +258,26 @@ function energia_adecuada(ranking_test, rankings_ordenados; mt = false)
   suma
 end
 
+@doc Markdown.doc"""
+energia_no_local
+# Ejemplos
+
+## Energia respecto a un solo ranking
+```
+julia > energia_no_local([1,2,3], sortperm([1,3,2]), mt = true)
+1
+```
+## Energia respecto a un conjunto ranking
+```
+julia > energia_no_local([1,2,3], sortperm.([[1,2,3], [1,3,2]]), mt = true)
+1
+```
+## Energia respecto a un poset
+```
+julia > energia_no_local(sortperm([2,1,3]), lista_posets_3[2])
+1
+```
+"""
 function energia_no_local(ranking_test, matriz::Array{Int,2}; mt = false)
   len = length(ranking_test)
   suma = 0
