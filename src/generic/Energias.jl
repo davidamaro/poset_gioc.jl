@@ -229,11 +229,11 @@ function energia_adhoc(rank, rankings_ordenados; mt = false)
 end
 
 @doc Markdown.doc"""
-function energia_local(ranking_test, rankings_ordenados; mt = false)
-Ejemplo
+`function energia_local(ranking_test, rankings_ordenados; mt = false)`
+# Ejemplo
 ```
 julia > energia_local([3,1,2,4,5], sortperm.([[1,2,3,4,5], [1,2,4,5,3]]), mt = true)
-8
+2
 ```
 """
 function energia_local(ranking_test, rankings_ordenados; mt = false)
