@@ -1,7 +1,8 @@
 export monte_carlo, wang_landau, densidad_exacta, positive
 export Simulacion, crear_matriz, new_mc
 export matriz_rutas, reduccion_transitiva
-export ranking_natural
+export ranking_natural, matriz_union_rankings
+export rankings_random, determinar_minimo_6, determinar_minimo_5
 
 import Statistics: mean
 import Combinatorics: permutations
@@ -410,4 +411,30 @@ function rankings_random(n::T, estructura::Vector{T}; ini = ranking_natural(n), 
         end
     end
     lista
+end
+
+function determinar_minimo_5(test)
+    min = norma_matrices(test)
+    ind_min = 0
+    for (ind, poset) in enumerate(lista_posets_e_5)
+        tmp = norma_matrices(test - poset)
+        if tmp < min
+            min = tmp
+            ind_min = ind
+        end
+    end
+    (min, ind_min)
+end
+
+function determinar_minimo_6(test)
+    min = norma_matrices(test)
+    ind_min = 0
+    for (ind, poset) in enumerate(lista_posets_e_6)
+        tmp = norma_matrices(test - poset)
+        if tmp < min
+            min = tmp
+            ind_min = ind
+        end
+    end
+    (min, ind_min)
 end

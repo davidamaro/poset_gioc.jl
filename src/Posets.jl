@@ -20,7 +20,8 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   matriz_rutas, reduccion_transitiva,
                   lista_posets_3, lista_posets_4, lista_posets_5,
                   lista_posets_e_4, lista_posets_e_5, lista_posets_e_6 ,
-                  ranking_natural
+                  ranking_natural, matriz_union_rankings,
+                  rankings_random, determinar_minimo_6, determinar_minimo_5
 export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
 export energia_por_pasos_p
@@ -31,6 +32,7 @@ export crear_matriz, norma_matrices, new_mc
 export matriz_rutas, reduccion_transitiva
 export lista_posets_3, lista_posets_4, lista_posets_5
 export lista_posets_e_4, lista_posets_e_5, lista_posets_e_6 
-export ranking_natural
+export ranking_natural, matriz_union_rankings
+export rankings_random, determinar_minimo_6, determinar_minimo_5
 
 end #module
