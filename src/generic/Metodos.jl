@@ -299,6 +299,10 @@ function crear_matriz(orden::Array{T,1}) where T <: Integer
   mat
 end
 
+function matriz_union_rankings(lista_ranks::Array{Array{T, 1}, 1}) where T <: Integer
+  sum(crear_matriz.(lista_ranks))
+end
+
 function crear_matriz(lista_ranks_ordenados::Array{Array{T, 1}, 1}) where T <: Integer
   n = lista_ranks_ordenados[1] |> length
   mat = zeros(Int, (n,n))
@@ -362,4 +366,48 @@ end
 function ranking_natural(n::Int)
   @assert n >= 2
   1:n |> collect
+end
+
+#############################################################
+#                                                            
+#                                                            
+#              Rankings                                      
+#                                                            
+#                                                            
+#############################################################
+function permutacion_corta(ranking::Vector{T}) where T <: Integer
+    n = ranking |> length
+    i = rand(1:n-1)
+    xx = deepcopy(ranking)
+    tmp = xx[i]
+    xx[i] = xx[i+1]
+    xx[i+1] = tmp
+    
+    xx
+end
+function permutacion_larga(ranking::Vector{T}, pasos::T) where T <: Integer
+    n = ranking |> length
+    xx = deepcopy(ranking)
+    for ii in 1:pasos
+        i = rand(1:n-1)
+        tmp = xx[i]
+        xx[i] = xx[i+1]
+        xx[i+1] = tmp
+    end
+
+    xx
+end
+
+function rankings_random(n::T, estructura::Vector{T}; ini = ranking_natural(n), pasos = 1000) where T <: Integer
+    lista = [ini]
+    while length(estructura) > 0
+        s = pop!(estructura)
+        for j in 1:s-1
+            push!(lista, permutacion_corta(lista[end]))
+        end
+        if length(estructura) > 0
+            push!(lista, permutacion_larga(lista[end], pasos))
+        end
+    end
+    lista
 end

@@ -54,3 +54,7 @@ end
   @test densidad_exacta(lista_posets_3[3],2,energia_no_local) == [2,2,2,0,0,0]
   @test densidad_exacta(lista_posets_3[4],2,energia_no_local) == [1,2,2,1,0,0]
 end
+
+@testset "densidad de un poset" begin
+  @test matriz_union_rankings([[1,2,3], [1,3,2]]) == [0 2 2; 0 0 1; 0 1 0]
+end
