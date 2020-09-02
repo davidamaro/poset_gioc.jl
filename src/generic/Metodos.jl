@@ -1,6 +1,8 @@
 export monte_carlo, wang_landau, densidad_exacta, positive
 export Simulacion, crear_matriz, new_mc
 export matriz_rutas, reduccion_transitiva
+export ranking_natural
+
 import Statistics: mean
 import Combinatorics: permutations
 import Base.+
@@ -355,4 +357,9 @@ function new_mc(lista_rankings, sim::Simulacion)
     end
   end
   distancias
+end
+
+function ranking_natural(n::Int)
+  @assert n >= 2
+  1:n |> collect
 end
