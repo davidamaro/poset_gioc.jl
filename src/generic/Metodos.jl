@@ -312,12 +312,6 @@ function matriz_union_rankings(lista_ranks::Array{Array{T, 1}, 1}; binario = tru
         mat[ind] = 0
       end
     end
-  else
-    for (ind,val) in enumerate(mat)
-      if val > 0
-        mat[ind] = 1
-      end
-    end
   end
   mat
 end

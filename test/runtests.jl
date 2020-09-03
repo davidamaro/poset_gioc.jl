@@ -21,17 +21,7 @@ end
 end
 
 @testset "matriz asociada a una lista de rankings" begin
-    mat = zeros(Int,(3,3))
-    mat[1,2] = 1
-    mat[1,3] = 1
-
-    @test crear_matriz(sortperm.([[1,3,2], [1,2,3]])) ==  mat
-
-    mat = zeros(Int,(3,3))
-    mat[1,3] = 1
-    mat[1,2] = 1
-    mat[3,2] = 1
-    @test crear_matriz(sortperm([1,3,2])) ==  mat
+  @test matriz_interseccion_rankings([[1,2,3], [1,3,2]]) == [ 0 1 1; 0 0 0; 0 0 0 ]
 end
 
 @testset "reduccion transitiva" begin
@@ -55,6 +45,7 @@ end
   @test densidad_exacta(lista_posets_3[4],2,energia_no_local) == [1,2,2,1,0,0]
 end
 
-@testset "densidad de un poset" begin
-  @test matriz_union_rankings([[1,2,3], [1,3,2]]) == [0 2 2; 0 0 1; 0 1 0]
+@testset "union de posets" begin
+  @test matriz_union_rankings([[1,2,3], [1,3,2]], binario = false) == [0 2 2; 0 0 1; 0 1 0]
+  @test matriz_union_rankings([[1,2,3], [1,3,2]]) == [0 1 1; 0 0 1; 0 1 0]
 end
