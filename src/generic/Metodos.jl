@@ -3,6 +3,7 @@ export Simulacion, crear_matriz, new_mc
 export matriz_rutas, reduccion_transitiva
 export ranking_natural, matriz_union_rankings
 export rankings_random, determinar_minimo_6, determinar_minimo_5
+export matriz_interseccion_rankings
 
 import Statistics: mean
 import Combinatorics: permutations
@@ -290,36 +291,75 @@ end
 function crear_matriz(orden::Array{T,1}) where T <: Integer
   n = orden |> length
   mat = zeros(Int, (n,n))
-  natural = 1:n |> collect
+  #natural = 1:n |> collect
 
   for i in 1:n, j in i+1:n
-    tmp = natural[orden]
-    mat[tmp[i], tmp[j]] += 1
+    #tmp = natural[orden]
+    #mat[tmp[i], tmp[j]] += 1
+    mat[orden[i], orden[j]] += 1
   end
 
   mat
 end
 
-function matriz_union_rankings(lista_ranks::Array{Array{T, 1}, 1}) where T <: Integer
-  sum(crear_matriz.(lista_ranks))
-end
-
-function crear_matriz(lista_ranks_ordenados::Array{Array{T, 1}, 1}) where T <: Integer
-  n = lista_ranks_ordenados[1] |> length
-  mat = zeros(Int, (n,n))
-  natural = 1:n |> collect
-  for orden in lista_ranks_ordenados
-    tmp = natural[orden]
-    for i in 1:n-1, j in i+1:n
-      mat[tmp[i], tmp[j]] = 1
-      if mat[tmp[i], tmp[j]] > 0 && mat[tmp[j],tmp[i]] > 0
-        mat[tmp[i],tmp[j]] = 0
-        mat[tmp[j],tmp[i]] = 0
+function matriz_union_rankings(lista_ranks::Array{Array{T, 1}, 1}; binario = true) where T <: Integer
+  mat = sum(crear_matriz.(lista_ranks))
+  if binario
+    for (ind,val) in enumerate(mat)
+      if val > 0
+        mat[ind] = 1
+      else
+        mat[ind] = 0
+      end
+    end
+  else
+    for (ind,val) in enumerate(mat)
+      if val > 0
+        mat[ind] = 1
       end
     end
   end
   mat
 end
+
+function matriz_interseccion_rankings(lista_ranks::Array{Array{T, 1}, 1}; binario = true) where T <: Integer
+  ranks = unique(lista_ranks)
+  len = ranks |> length
+  mat = sum(crear_matriz.(ranks))
+  if binario
+    for (ind,val) in enumerate(mat)
+      if val != len
+        mat[ind] = 0
+      else
+        mat[ind] = 1
+      end
+    end
+  else
+    for (ind,val) in enumerate(mat)
+      if val != len
+        mat[ind] = 0
+      end
+    end
+  end
+  mat
+end
+
+#function crear_matriz(lista_ranks_ordenados::Array{Array{T, 1}, 1}) where T <: Integer
+#  n = lista_ranks_ordenados[1] |> length
+#  mat = zeros(Int, (n,n))
+#  natural = 1:n |> collect
+#  for orden in lista_ranks_ordenados
+#    tmp = natural[orden]
+#    for i in 1:n-1, j in i+1:n
+#      mat[tmp[i], tmp[j]] = 1
+#      if mat[tmp[i], tmp[j]] > 0 && mat[tmp[j],tmp[i]] > 0
+#        mat[tmp[i],tmp[j]] = 0
+#        mat[tmp[j],tmp[i]] = 0
+#      end
+#    end
+#  end
+#  mat
+#end
 
 
 function new_mc(lista_rankings, sim::Simulacion)
