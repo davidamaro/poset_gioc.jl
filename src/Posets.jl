@@ -16,7 +16,7 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   monte_carlo, wang_landau, Simulacion, densidad_exacta,
                   positive,
                   SG, apply_filter,
-                  norma_matrices, new_mc,
+                  new_mc,
                   matriz_rutas, reduccion_transitiva,
                   lista_posets_3, lista_posets_4, lista_posets_5,
                   lista_posets_e_4, lista_posets_e_5, lista_posets_e_6 ,
@@ -29,7 +29,7 @@ export energia_por_pasos_p
 export monte_carlo, wang_landau, Simulacion, densidad_exacta
 export positive
 export SG, apply_filter
-export norma_matrices, new_mc
+export new_mc
 export matriz_rutas, reduccion_transitiva
 export lista_posets_3, lista_posets_4, lista_posets_5
 export lista_posets_e_4, lista_posets_e_5, lista_posets_e_6 

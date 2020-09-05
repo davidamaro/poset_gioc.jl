@@ -1,7 +1,9 @@
 import Primes: prime
+import LinearAlgebra: norm
+
 export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
-export energia_por_pasos_p, norma_matrices
+export energia_por_pasos_p
 
 const Poset = Array{T, 2} where T <: Integer
 
@@ -441,6 +443,6 @@ function energia_por_pasos_p(ranking_b::Array{T,1}, ranking_r_ord::Array{Array{T
   sum((x -> energia_por_pasos(ranking_b, x)).(ranking_r_ord))
 end
 
-function norma_matrices(mat::Array{T,2}) where T <: Integer
-  sum(mat.*mat) |> sqrt
-end
+#function norma_matrices(mat::Array{T,2}) where T <: Real
+#  sum(mat.*mat) |> sqrt
+#end
