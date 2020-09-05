@@ -23,7 +23,10 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   ranking_natural, matriz_union_rankings, matriz_interseccion_rankings,
                   rankings_random, determinar_minimo_6, determinar_minimo_5,
                   crear_matriz, condorcet,
-                  resaltados, determinar_tipo
+                  resaltados, determinar_tipo,
+                  determinar_minimos,
+                  derecha_abajo
+
 export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
 export energia_por_pasos_p
@@ -39,5 +42,7 @@ export rankings_random, determinar_minimo_6, determinar_minimo_5
 export crear_matriz
 export resaltados, determinar_tipo
 export condorcet
+export determinar_minimos
+export derecha_abajo
 
 end #module

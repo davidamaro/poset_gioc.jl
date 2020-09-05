@@ -5,10 +5,13 @@ export ranking_natural, matriz_union_rankings
 export rankings_random, determinar_minimo_6, determinar_minimo_5
 export matriz_interseccion_rankings
 export condorcet
+export determinar_minimos
+export derecha_abajo
 
 import Statistics: mean
 import Combinatorics: permutations
 import Base.+
+import LinearAlgebra: norm
 
 function +(a::Array{Int64,2},b::Tuple{Int64,Int64})
     x,y = b
@@ -488,6 +491,26 @@ function determinar_minimo_6(ranking_prueba; todos = false)
     (min, ind_min)
 end
 
+function determinar_minimos(ranking_prueba, lista)
+    min = norm(ranking_prueba)
+    ind_min = 0
+    for (ind, poset) in enumerate(lista)
+        tmp = norm(ranking_prueba - poset)
+        if tmp < min
+            min = tmp
+            ind_min = ind
+        end
+    end
+    lista_posetsminimos = Int[]
+    for (i,v) in enumerate(lista)
+        nn = norm(v - ranking_prueba)
+        if nn ≈ min
+            push!(lista_posetsminimos, i)
+        end
+    end
+    return lista_posetsminimos
+end
+
 function condorcet(matriz::Array{T,2}) where T <: Real
   matriz_condorcet = zero(matriz)
   for (i,v) in enumerate(matriz)
@@ -498,4 +521,18 @@ function condorcet(matriz::Array{T,2}) where T <: Real
     end
   end
   matriz_condorcet
+end
+
+function derecha_abajo(test,lista)
+    alto    = length(test)
+    derecha = 0
+    indice = 1
+    for (ind,poset) in enumerate(lista)
+        if norm(poset - test) < alto && norm(poset) > derecha
+            derecha = norm(poset)
+            alto =  norm(poset - test)
+            indice = ind
+        end
+    end
+    indice
 end
