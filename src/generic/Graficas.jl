@@ -1,4 +1,4 @@
-import LightGraphs: SimpleDiGraph, nv, has_edge 
+import LightGraphs: SimpleDiGraph, nv, has_edge, inneighbors, outneighbors, edges
 export resaltados, determinar_tipo
 
 function resaltados(g1::SimpleDiGraph{T},g2::SimpleDiGraph{T}) where T <: Integer
