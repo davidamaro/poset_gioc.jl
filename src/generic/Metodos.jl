@@ -4,6 +4,7 @@ export matriz_rutas, reduccion_transitiva
 export ranking_natural, matriz_union_rankings
 export rankings_random, determinar_minimo_6, determinar_minimo_5
 export matriz_interseccion_rankings
+export condorcet
 
 import Statistics: mean
 import Combinatorics: permutations
@@ -471,4 +472,16 @@ function determinar_minimo_6(test)
         end
     end
     (min, ind_min)
+end
+
+function condorcet(matriz::Array{T,2}) where T <: Real
+  matriz_condorcet = zero(matriz)
+  for (i,v) in enumerate(matriz)
+    if v < .5
+        matriz_condorcet[i] = 0
+    else
+        matriz_condorcet[i] = 1
+    end
+  end
+  matriz_condorcet
 end
