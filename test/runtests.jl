@@ -1,4 +1,5 @@
 using Posets, Test
+import LightGraphs: DiGraph
 
 @testset "energia local" begin
     @test energia_local([1,2,3], lista_posets_3[2]) == 0
@@ -48,4 +49,17 @@ end
 @testset "union de posets" begin
   @test matriz_union_rankings([[1,2,3], [1,3,2]], binario = false) == [0 2 2; 0 0 1; 0 1 0]
   @test matriz_union_rankings([[1,2,3], [1,3,2]]) == [0 1 1; 0 0 1; 0 1 0]
+end
+
+@testset "aristas resaltadas" begin
+  ejemplo_1 = zeros(Int, (3,3))
+  ejemplo_1[1,2]= 1
+  ejemplo_1[1,3] = 1
+  ejemplo_2 = zeros(Int, (3,3))
+  ejemplo_2[1,2]= 1
+  ejemplo_3 = zeros(Int, (3,3))
+  ejemplo_3[2,3]= 1
+
+  @test resaltados(ejemplo_1|>DiGraph, ejemplo_2|>DiGraph) == [2]
+  @test resaltados(ejemplo_1|>DiGraph, ejemplo_3|>DiGraph) == [1]
 end
