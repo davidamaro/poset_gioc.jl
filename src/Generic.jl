@@ -6,5 +6,6 @@ include("generic/Energias.jl")
 include("generic/Metodos.jl")
 include("generic/Derivadas.jl")
 include("generic/ListaPosets.jl")
+include("generic/Graficas.jl")
 
 end #Generic
