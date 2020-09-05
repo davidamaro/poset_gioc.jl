@@ -315,17 +315,29 @@ function matriz_union_rankings(lista_ranks::Array{Array{T, 1}, 1}; binario = tru
         mat[ind] = 0
       end
     end
+  elseif promediado && !binario
+    for (ind,val) in enumerate(mat)
+      if val > 0
+        mat[ind] /= len
+      else
+        mat[ind] = 0
+      end
+    end
+  elseif !promediado && !binario
+    return mat
+  else
+    throw(ArgumentError("keywords invalidas"))
   end
   mat
 end
 
-function matriz_interseccion_rankings(lista_ranks::Array{Array{T, 1}, 1}; porcentage = 1.0, binario = true) where T <: Integer
+function matriz_interseccion_rankings(lista_ranks::Array{Array{T, 1}, 1}; porcentaje = 1.0, binario = true) where T <: Integer
   ranks = unique(lista_ranks)
   len = ranks |> length
   mat = sum(crear_matriz.(ranks))
   if binario
     for (ind,val) in enumerate(mat)
-      if val < len*porcentage
+      if val < len*porcentaje
         mat[ind] = 0
       else
         mat[ind] = 1
@@ -333,7 +345,7 @@ function matriz_interseccion_rankings(lista_ranks::Array{Array{T, 1}, 1}; porcen
     end
   else
     for (ind,val) in enumerate(mat)
-      if val < len*porcentage
+      if val < len*porcentaje
         mat[ind] = 0
       end
     end
