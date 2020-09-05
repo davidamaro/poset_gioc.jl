@@ -316,13 +316,13 @@ function matriz_union_rankings(lista_ranks::Array{Array{T, 1}, 1}; binario = tru
   mat
 end
 
-function matriz_interseccion_rankings(lista_ranks::Array{Array{T, 1}, 1}; binario = true) where T <: Integer
+function matriz_interseccion_rankings(lista_ranks::Array{Array{T, 1}, 1}; porcentage = 1.0, binario = true) where T <: Integer
   ranks = unique(lista_ranks)
   len = ranks |> length
   mat = sum(crear_matriz.(ranks))
   if binario
     for (ind,val) in enumerate(mat)
-      if val != len
+      if val < len*porcentage
         mat[ind] = 0
       else
         mat[ind] = 1
@@ -330,7 +330,7 @@ function matriz_interseccion_rankings(lista_ranks::Array{Array{T, 1}, 1}; binari
     end
   else
     for (ind,val) in enumerate(mat)
-      if val != len
+      if val < len*porcentage
         mat[ind] = 0
       end
     end
