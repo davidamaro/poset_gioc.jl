@@ -303,9 +303,11 @@ function crear_matriz(orden::Array{T,1}) where T <: Integer
   mat
 end
 
-function matriz_union_rankings(lista_ranks::Array{Array{T, 1}, 1}; binario = true) where T <: Integer
-  mat = sum(crear_matriz.(lista_ranks))
-  if binario
+function matriz_union_rankings(lista_ranks::Array{Array{T, 1}, 1}; binario = true, promediado = false) where T <: Real
+  len = length(lista_ranks)
+  #mat = zeros(Float64, (len, len))
+  mat = sum(crear_matriz.(lista_ranks)).*(1.0)
+  if binario && !promediado
     for (ind,val) in enumerate(mat)
       if val > 0
         mat[ind] = 1
