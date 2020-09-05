@@ -462,11 +462,11 @@ function rankings_random(n::T, estructura::Vector{T}; ini = ranking_natural(n), 
     lista
 end
 
-function determinar_minimo_5(test)
-    min = norma_matrices(test)
+function determinar_minimo_5(ranking_prueba)
+    min = norma_matrices(ranking_prueba)
     ind_min = 0
     for (ind, poset) in enumerate(lista_posets_e_5)
-        tmp = norma_matrices(test - poset)
+        tmp = norma_matrices(ranking_prueba - poset)
         if tmp < min
             min = tmp
             ind_min = ind
@@ -475,11 +475,11 @@ function determinar_minimo_5(test)
     (min, ind_min)
 end
 
-function determinar_minimo_6(test)
-    min = norma_matrices(test)
+function determinar_minimo_6(ranking_prueba; todos = false)
+    min = norm(ranking_prueba)
     ind_min = 0
     for (ind, poset) in enumerate(lista_posets_e_6)
-        tmp = norma_matrices(test - poset)
+        tmp = norm(ranking_prueba - poset)
         if tmp < min
             min = tmp
             ind_min = ind
