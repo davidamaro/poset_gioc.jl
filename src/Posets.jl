@@ -1,7 +1,5 @@
 module Posets
 
-using DelimitedFiles
-using SimplePosets
 using Statistics
 using Random
 using Combinatorics
