@@ -6,6 +6,8 @@ using Combinatorics
 using Markdown
 using Primes
 
+import StatsBase: countmap
+
 include("Generic.jl")
 
 import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
@@ -23,7 +25,8 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   crear_matriz, condorcet,
                   resaltados, determinar_tipo,
                   determinar_minimos,
-                  derecha_abajo
+                  derecha_abajo,
+                  isacyclic, caminata_poset
 
 export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
@@ -42,5 +45,6 @@ export resaltados, determinar_tipo
 export condorcet
 export determinar_minimos
 export derecha_abajo
+export isacyclic, caminata_poset
 
 end #module

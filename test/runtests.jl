@@ -1,5 +1,6 @@
 using Posets, Test
 import LightGraphs: DiGraph
+import SparseArrays: spzeros
 
 @testset "energia local" begin
     @test energia_local([1,2,3], lista_posets_3[2]) == 0
@@ -62,4 +63,63 @@ end
 
   @test resaltados(ejemplo_1|>DiGraph, ejemplo_2|>DiGraph) == [2]
   @test resaltados(ejemplo_1|>DiGraph, ejemplo_3|>DiGraph) == [1]
+end
+
+@testset "probando aciclicas" begin
+    ciclica = spzeros(Int64,6,6)
+    ciclica[1,2] = 1
+    ciclica[2,3] = 1
+    ciclica[2,4] = 1
+    ciclica[4,5] = 1
+    ciclica[4,6] = 1
+    ciclica[5,6] = 1
+    ciclica[6,3] = 1
+    ciclica[6,4] = 1
+    @test !isacyclic(ciclica)
+    aciclica = spzeros(Int64,6,6)
+    aciclica[1,2] = 1
+    aciclica[2,3] = 1
+    aciclica[2,4] = 1
+    aciclica[4,5] = 1
+    aciclica[4,6] = 1
+    aciclica[5,6] = 1
+    aciclica[6,3] = 1
+    @test isacyclic(aciclica)
+    chava_fea_1 = spzeros(Int64,5,5)
+    chava_fea_1[1,5] = 1
+    chava_fea_1[4,1] = 1
+    chava_fea_1[4,2] = 1
+    chava_fea_1[5,4] = 1
+    chava_fea_1[5,3] = 1
+    @test !isacyclic(chava_fea_1)
+    chava_guapa_1 = spzeros(Int64,5,5)
+    chava_guapa_1[1,5] = 1
+    chava_guapa_1[4,2] = 1
+    chava_guapa_1[5,4] = 1
+    chava_guapa_1[5,3] = 1
+    @test isacyclic(chava_guapa_1)
+    chava_guapa_2 = spzeros(Int64,5,5)
+    chava_guapa_2[1,2] = 1
+    chava_guapa_2[2,3] = 1
+    chava_guapa_2[3,4] = 1
+    chava_guapa_2[4,5] = 1
+    @test isacyclic(chava_guapa_2)
+    chava_fea_2 = spzeros(Int64,5,5)
+    chava_fea_2[1,2] = 1
+    chava_fea_2[2,3] = 1
+    chava_fea_2[3,4] = 1
+    chava_fea_2[4,5] = 1
+    chava_fea_2[5,3] = 1
+    @test !isacyclic(chava_fea_2)
+    chava_rara_1 = spzeros(Int64,5,5)
+    chava_rara_1[1,2] = 1
+    chava_rara_1[1,3] = 1
+    chava_rara_1[4,5] = 1
+    @test isacyclic(chava_rara_1)
+    chava_rara_2 = spzeros(Int64,5,5)
+    chava_rara_2[1,2] = 1
+    chava_rara_2[2,3] = 1
+    chava_rara_2[3,1] = 1
+    chava_rara_2[4,5] = 1
+    @test !isacyclic(chava_rara_2)
 end
