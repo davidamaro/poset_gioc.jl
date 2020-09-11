@@ -26,7 +26,7 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   resaltados, determinar_tipo,
                   determinar_minimos,
                   derecha_abajo,
-                  isacyclic, caminata_poset
+                  isacyclic, caminata_poset, caminata_poset_4
 
 export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
@@ -45,6 +45,6 @@ export resaltados, determinar_tipo
 export condorcet
 export determinar_minimos
 export derecha_abajo
-export isacyclic, caminata_poset
+export isacyclic, caminata_poset, caminata_poset_4
 
 end #module

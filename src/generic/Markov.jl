@@ -1,6 +1,7 @@
 import SparseArrays: spzeros, SparseMatrixCSC
 import LightGraphs: is_cyclic, DiGraph, transitiveclosure, transitivereduction, adjacency_matrix
 export isacyclic, caminata_poset, caminata_poset_4
+import LinearAlgebra: norm
 
 function complement(x::Array{Int64,1}, y::Array{Int64,1})
     todos = vcat([x, y]...) |> unique
@@ -66,18 +67,14 @@ function aristarandom(n::Int64)
 end
 
 function cardinality(dag::Array{Int64,2})
-    t = dag |> matriz_rutas |> sum
-    r = dag |> reduccion_transitiva |> sum
-    @show dag |> DiGraph |> transitiveclosure |> adjacency_matrix |> sum, dag |> DiGraph |> transitivereduction |> adjacency_matrix |> sum
-    @show t,r
+    t = dag |> DiGraph |> transitiveclosure |> adjacency_matrix |> sum
+    r = dag |> DiGraph |> transitivereduction |> adjacency_matrix |> sum
     2^(t - r)
 end
 
 function cardinality(dag::SparseMatrixCSC{Int64,Int64})
-    t = dag |> Array |> matriz_rutas |> sum
-    r = dag |> Array |> reduccion_transitiva |> sum
-    @show dag |> DiGraph |> transitiveclosure |> adjacency_matrix |> sum, dag |> DiGraph |> transitivereduction |> adjacency_matrix |> sum
-    @show t,r
+    t = dag |> DiGraph |> transitiveclosure |> adjacency_matrix |> sum
+    r = dag |> DiGraph |> transitivereduction |> adjacency_matrix |> sum
     2^(t - r)
 end
 
@@ -126,7 +123,8 @@ end
 
 function caminata_poset_4(n::Int64,pasos::Int64;verbose::Bool=false)
     original  =  spzeros(Int64, n,n)
-    operacion =  spzeros(Int64, n,n)
+    #operacion =  spzeros(Int64, n,n)
+    operacion = original |> deepcopy
     for i in 1:pasos
         
         x,y = rand([(1,2), (1,3), (1,4), (2,1), (2,3), (2,4), (3,1), (3,2), (3,4), (4,1), (4,2), (4,3)])
@@ -149,11 +147,14 @@ function caminata_poset_4(n::Int64,pasos::Int64;verbose::Bool=false)
         proba = rand()
 
         if verbose
-            @show original, operacion, cor/cop
+            @show norm(original - operacion), cor/cop
+            #@show original, operacion, cor/cop
         end
 
         if proba < minimum([1.0, cor/cop])
-            original = operacion
+            original = deepcopy(operacion)
+        else
+            operacion = deepcopy(original)
         end
     end
     original
