@@ -1,6 +1,7 @@
 import SparseArrays: spzeros, SparseMatrixCSC
 import LightGraphs: is_cyclic, DiGraph, transitiveclosure, transitivereduction, adjacency_matrix
 export isacyclic, caminata_poset, caminata_poset_4
+export listaposetsaleatorios
 import LinearAlgebra: norm
 
 function complement(x::Array{Int64,1}, y::Array{Int64,1})
@@ -108,14 +109,16 @@ function caminata_poset(n::Int64,pasos::Int64;verbose::Bool=false)
 
         cor,cop = cardinality.([original,operacion])
 
-        proba = rand()
+        proba   = rand()
 
         if verbose
             @show original, operacion
         end
 
         if proba < minimum([1.0, cor/cop])
-            original = operacion
+            original = operacion |> deepcopy
+        else
+            operacion = original |> deepcopy
         end
     end
     original
@@ -148,7 +151,6 @@ function caminata_poset_4(n::Int64,pasos::Int64;verbose::Bool=false)
 
         if verbose
             @show norm(original - operacion), cor/cop
-            #@show original, operacion, cor/cop
         end
 
         if proba < minimum([1.0, cor/cop])
@@ -158,4 +160,21 @@ function caminata_poset_4(n::Int64,pasos::Int64;verbose::Bool=false)
         end
     end
     original
+end
+
+@doc Markdown.doc"""
+    caminata_poset(numeronodos, pasos; verbose)
+> Devuelve un DAG
+
+# Examples:
+```
+julia> listaposetsaleatorios(3,10)
+```
+"""
+function listaposetsaleatorios(n::Int64, steps::Int64; m::Int64 = n^2)
+  lista_posetsrandom = Array{Int64,2}[]
+  for i in 1:steps
+    push!(lista_posetsrandom, caminata_poset(n,n^2))
+  end
+  lista_posetsrandom
 end
