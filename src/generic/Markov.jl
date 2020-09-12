@@ -68,14 +68,14 @@ function aristarandom(n::Int64)
 end
 
 function cardinality(dag::Array{Int64,2})
-    t = dag |> DiGraph |> transitiveclosure |> adjacency_matrix |> sum
-    r = dag |> DiGraph |> transitivereduction |> adjacency_matrix |> sum
+    t = dag |> matriz_rutas |> sum #|> DiGraph |> transitiveclosure |> adjacency_matrix |> sum
+    r = dag |> reduccion_transitiva |> sum#|> DiGraph |> transitivereduction |> adjacency_matrix |> sum
     2^(t - r)
 end
 
 function cardinality(dag::SparseMatrixCSC{Int64,Int64})
-    t = dag |> DiGraph |> transitiveclosure |> adjacency_matrix |> sum
-    r = dag |> DiGraph |> transitivereduction |> adjacency_matrix |> sum
+    t = dag |> matriz_rutas |> sum #|> DiGraph |> transitiveclosure |> adjacency_matrix |> sum
+    r = dag |> reduccion_transitiva |> sum#|> DiGraph |> transitivereduction |> adjacency_matrix |> sum
     2^(t - r)
 end
 
@@ -116,9 +116,9 @@ function caminata_poset(n::Int64,pasos::Int64;verbose::Bool=false)
         end
 
         if proba < minimum([1.0, cor/cop])
-            original = operacion |> deepcopy
+            original  = operacion |> copy
         else
-            operacion = original |> deepcopy
+            operacion = original |> copy
         end
     end
     original

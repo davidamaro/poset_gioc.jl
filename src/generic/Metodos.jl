@@ -12,6 +12,7 @@ import Statistics: mean
 import Combinatorics: permutations
 import Base.+
 import LinearAlgebra: norm
+import SparseArrays: spzeros, SparseMatrixCSC
 
 function +(a::Array{Int64,2},b::Tuple{Int64,Int64})
     x,y = b
@@ -254,6 +255,24 @@ positive(x::T) where T<:Real = x > 0
 #                                                                              #
 ################################################################################
 #source https://github.com/lucasrabiec/TransitiveAlgorithms/blob/master/src/TransitiveAlgorithms/Reduction.cs
+function matriz_rutas(mat::SparseMatrixCSC{Int64,Int64})
+    path_matrix = copy(mat)
+    n,n = size(mat)
+    for i in 1:n, j in 1:n
+        if i == j
+            continue
+        end
+        if path_matrix[j,i] > 0
+            for k in 1:n
+                if path_matrix[j,k] == 0
+                    path_matrix[j,k] = path_matrix[i,k]
+                end
+            end
+        end
+    end
+    path_matrix
+end
+
 function matriz_rutas(mat::Array{T,2}) where T <: Integer
     path_matrix = deepcopy(mat)
     n,n = size(mat)
@@ -270,6 +289,22 @@ function matriz_rutas(mat::Array{T,2}) where T <: Integer
         end
     end
     path_matrix
+end
+
+function reduccion_transitiva(mat::SparseMatrixCSC{Int64,Int64})
+    mat_red = mat |> matriz_rutas
+    n,n = size(mat)
+
+    for i in 1:n, j in 1:n
+        if mat_red[j,i] > 0
+            for k in 1:n
+                if mat_red[i,k] > 0
+                    mat_red[j,k] = 0
+                end
+            end
+        end
+    end
+    mat_red
 end
 
 function reduccion_transitiva(mat::Array{T,2}) where T <: Integer
