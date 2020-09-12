@@ -172,7 +172,7 @@ julia> listaposetsaleatorios(3,10)
 ```
 """
 function listaposetsaleatorios(n::Int64, steps::Int64; m::Int64 = n^2)
-  lista_posetsrandom = Array{Int64,2}[]
+  lista_posetsrandom = SparseMatrixCSC{Int64,Int64}[]
   for i in 1:steps
     push!(lista_posetsrandom, caminata_poset(n,n^2))
   end
