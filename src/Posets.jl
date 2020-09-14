@@ -7,6 +7,7 @@ using Markdown
 using Primes
 
 import StatsBase: countmap
+import LinearAlgebra: norm
 
 include("Generic.jl")
 
@@ -26,7 +27,8 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   resaltados, determinar_tipo,
                   determinar_minimos,
                   derecha_abajo,
-                  isacyclic, caminata_poset, caminata_poset_4, listaposetsaleatorios
+                  isacyclic, caminata_poset, caminata_poset_4, listaposetsaleatorios,
+                  graficacolor, encontrarminimo
 
 export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
@@ -46,5 +48,6 @@ export condorcet
 export determinar_minimos
 export derecha_abajo
 export isacyclic, caminata_poset, caminata_poset_4, listaposetsaleatorios
+export graficacolor, encontrarminimo
 
 end #module

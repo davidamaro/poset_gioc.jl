@@ -2,6 +2,7 @@ import SparseArrays: spzeros, SparseMatrixCSC
 import LightGraphs: is_cyclic, DiGraph, transitiveclosure, transitivereduction, adjacency_matrix
 export isacyclic, caminata_poset, caminata_poset_4
 export listaposetsaleatorios
+export encontrarminimo
 import LinearAlgebra: norm
 
 function complement(x::Array{Int64,1}, y::Array{Int64,1})
@@ -177,4 +178,18 @@ function listaposetsaleatorios(n::Int64, steps::Int64; m::Int64 = n^2)
     push!(lista_posetsrandom, caminata_poset(n,n^2))
   end
   lista_posetsrandom
+end
+
+function encontrarminimo(mat::Array{Float64,2},tope::Int64)
+    minimo::Float64 = 100.
+    bono::SparseMatrixCSC{Int64,Int64} = caminata_poset(7,7^2)
+    for i in 1:tope
+        pp = caminata_poset(7,7^2) |> reduccion_transitiva
+        nn = norm(mat - pp)
+        if minimo > nn#norm(union_promedio - pp)
+            minimo = nn
+            bono = pp |> copy
+        end
+    end
+    minimo, bono
 end
