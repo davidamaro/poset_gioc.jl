@@ -1,6 +1,7 @@
 using Posets, Test
 import LightGraphs: DiGraph
 import SparseArrays: spzeros
+import StatsBase: countmap
 
 @testset "energia local" begin
     @test energia_local([1,2,3], lista_posets_3[2]) == 0
@@ -122,4 +123,36 @@ end
     chava_rara_2[3,1] = 1
     chava_rara_2[4,5] = 1
     @test !isacyclic(chava_rara_2)
+end
+
+@testset "total variation 3 nodos" begin
+    function boba()
+        lista_posetsrandom = Array{Int64,2}[]
+        for i in 1:10000
+            #push!(lista_posetsrandom, caminata_poset(4,16) |> Array |> reduccion_transitiva)
+            push!(lista_posetsrandom, caminata_poset(3,9))
+        end
+
+        #listaaumentada = map(x -> matriz_rutas(Array(x)) |> reduccion_transitiva, lista_posetsrandom);
+        map(x -> matriz_rutas(Array(x)) |> reduccion_transitiva, lista_posetsrandom)
+    end
+    listaaumentada = boba()
+    valores = countmap(listaaumentada) |> values |> collect;
+    @test sum(abs.((valores./sum(valores)).-(1/19)))/2 < 0.1
+end
+
+@testset "total variation 4 nodos" begin
+    function boba()
+        lista_posetsrandom = Array{Int64,2}[]
+        for i in 1:100000
+            #push!(lista_posetsrandom, caminata_poset(4,16) |> Array |> reduccion_transitiva)
+            push!(lista_posetsrandom, caminata_poset(4,4^2))
+        end
+
+        #listaaumentada = map(x -> matriz_rutas(Array(x)) |> reduccion_transitiva, lista_posetsrandom);
+        map(x -> matriz_rutas(Array(x)) |> reduccion_transitiva, lista_posetsrandom)
+    end
+    listaaumentada = boba()
+    valores = countmap(listaaumentada) |> values |> collect;
+    @test sum(abs.((valores./sum(valores)).-(1/219)))/2 < 0.1
 end
