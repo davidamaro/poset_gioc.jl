@@ -45,3 +45,15 @@ function graficacolor(mat::SparseMatrixCSC{Int64,Int64})
     gplot(eje_1, nodelabel=collect(1:nv(eje_1)),layout = circular_layout,nodefillc=nodefillc)
     #gplot(eje_1, nodelabel=collect(1:nv(eje_1)),layout = circular_layout,nodefillc=nodefillc,edgestrokec=edgefillc)
 end
+
+function graficacolor(mat::Array{T,2}) where T <: Real
+    eje_1     = mat  |> DiGraph
+    nodecolor = [colorant"lightgreen", colorant"orange",  colorant"pink"]
+    edgecolor = [colorant"black", colorant"lightgray"]
+    membresia = determinar_tipo(eje_1)
+    #aristas   = resaltados( mat |> DiGraph, eje_1)
+    nodefillc = nodecolor[membresia]
+    #edgefillc = edgecolor[aristas]
+    gplot(eje_1, nodelabel=collect(1:nv(eje_1)),layout = circular_layout,nodefillc=nodefillc)
+    #gplot(eje_1, nodelabel=collect(1:nv(eje_1)),layout = circular_layout,nodefillc=nodefillc,edgestrokec=edgefillc)
+end

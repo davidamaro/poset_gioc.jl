@@ -49,5 +49,7 @@ export determinar_minimos
 export derecha_abajo
 export isacyclic, caminata_poset, caminata_poset_4, listaposetsaleatorios
 export graficacolor, encontrarminimo
+# exportaciones de otros paquetes
+export norm, countmap
 
 end #module
