@@ -7,6 +7,7 @@ export matriz_interseccion_rankings
 export condorcet
 export determinar_minimos
 export derecha_abajo
+export posicionpromedio, posicionvarianza
 
 import Statistics: mean
 import Combinatorics: permutations
@@ -570,4 +571,22 @@ function derecha_abajo(test,lista)
         end
     end
     indice
+end
+
+function posicionpromedio(listarankings::Array{Array{Int64,1},1},m::Int64)
+    n::Int64 = length(listarankings[1])
+    posicionesm::Array{Int64,1} = zeros(Int,n)
+    for el in listarankings
+        posicionesm[sortperm(el)[m]] += 1
+    end
+    sum(collect(1:n) .* (posicionesm/length(listarankings)))
+end
+
+function posicionvarianza(listarankings::Array{Array{Int64,1},1},m::Int64)
+    n::Int64 = length(listarankings[1])
+    posicionesm::Array{Int64,1} = zeros(Int,n)
+    for el in listarankings
+        posicionesm[sortperm(el)[m]] += 1
+    end
+    sqrt(sum(collect(1:n).^2 .* (posicionesm/length(listarankings))) - sum(collect(1:n) .* (posicionesm/length(listarankings))))
 end

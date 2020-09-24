@@ -156,3 +156,8 @@ end
     valores = countmap(listaaumentada) |> values |> collect;
     @test sum(abs.((valores./sum(valores)).-(1/219)))/2 < 0.1
 end
+
+@testset "varianza y promedio de posicion" begin
+    @test posicionpromedio([[1,2,3], [1,3,2]], 1) ≈ 1.0
+    @test posicionvarianza([[1,2,3], [1,3,2]], 1) ≈ 0.0
+end
