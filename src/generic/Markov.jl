@@ -180,11 +180,11 @@ function listaposetsaleatorios(n::Int64, steps::Int64; m::Int64 = n^2)
   lista_posetsrandom
 end
 
-function encontrarminimo(mat::Array{Float64,2},tope::Int64)
+function encontrarminimo(mat::Array{Float64,2},n::Int64, tope::Int64)
     minimo::Float64 = 100.
-    bono::SparseMatrixCSC{Int64,Int64} = caminata_poset(7,7^2)
+    bono::SparseMatrixCSC{Int64,Int64} = caminata_poset(n, n^2)
     for i in 1:tope
-        pp = caminata_poset(7,7^2) |> reduccion_transitiva
+        pp = caminata_poset(n, n^2) |> reduccion_transitiva
         nn = norm(mat - pp)
         if minimo > nn#norm(union_promedio - pp)
             minimo = nn
