@@ -8,6 +8,7 @@ export condorcet
 export determinar_minimos
 export derecha_abajo
 export posicionpromedio, posicionvarianza
+export pearson
 
 import Statistics: mean
 import Combinatorics: permutations
@@ -589,4 +590,9 @@ function posicionvarianza(listarankings::Array{Array{Int64,1},1},m::Int64)
         posicionesm[sortperm(el)[m]] += 1
     end
     sqrt(sum(collect(1:n).^2 .* (posicionesm/length(listarankings))) - (sum(collect(1:n) .* (posicionesm/length(listarankings))))^2)
+end
+
+function pearson(r1::Array{Int64,1}, r2::Array{Int64,1})
+    len::Int64 = r1 |> length
+    6*sum([(sortperm(r1)[i] - sortperm(r2)[i])^2 for i in 1:len])/(len*(len^2 - 1))
 end
