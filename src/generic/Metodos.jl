@@ -588,5 +588,5 @@ function posicionvarianza(listarankings::Array{Array{Int64,1},1},m::Int64)
     for el in listarankings
         posicionesm[sortperm(el)[m]] += 1
     end
-    sqrt(sum(collect(1:n).^2 .* (posicionesm/length(listarankings))) - sum(collect(1:n) .* (posicionesm/length(listarankings))))
+    sqrt(sum(collect(1:n).^2 .* (posicionesm/length(listarankings))) - (sum(collect(1:n) .* (posicionesm/length(listarankings))))^2)
 end
