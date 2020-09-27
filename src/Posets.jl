@@ -27,8 +27,9 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   resaltados, determinar_tipo,
                   determinar_minimos,
                   derecha_abajo,
-                  isacyclic, caminata_poset, caminata_poset_4, listaposetsaleatorios,
-                  graficacolor, encontrarminimo, posicionpromedio, posicionvarianza, pearson
+                  isacyclic, caminata_poset, listaposetsaleatorios,
+                  graficacolor, encontrarminimo, posicionpromedio, posicionvarianza, pearson,
+                  caminatale
 
 export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
@@ -47,11 +48,12 @@ export resaltados, determinar_tipo
 export condorcet
 export determinar_minimos
 export derecha_abajo
-export isacyclic, caminata_poset, caminata_poset_4, listaposetsaleatorios
+export isacyclic, caminata_poset, listaposetsaleatorios
 export graficacolor, encontrarminimo
 # exportaciones de otros paquetes
 export norm, countmap
 export posicionpromedio, posicionvarianza
 export pearson
+export caminatale
 
 end #module

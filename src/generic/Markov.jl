@@ -1,9 +1,10 @@
 import SparseArrays: spzeros, SparseMatrixCSC
-import LightGraphs: is_cyclic, DiGraph, transitiveclosure, transitivereduction, adjacency_matrix
+import LightGraphs: is_cyclic, DiGraph, transitiveclosure, transitivereduction, adjacency_matrix, topological_sort_by_dfs
 export isacyclic, caminata_poset, caminata_poset_4
 export listaposetsaleatorios
 export encontrarminimo
 import LinearAlgebra: norm
+export caminatale
 
 function complement(x::Array{Int64,1}, y::Array{Int64,1})
     todos = vcat([x, y]...) |> unique
@@ -192,4 +193,41 @@ function encontrarminimo(mat::Array{Float64,2},n::Int64, tope::Int64)
         end
     end
     minimo, bono
+end
+
+function caminatale(mat::Array{Int64,2}, pasos::Int64)
+    le::Array{Int64,1} = mat |> DiGraph |> topological_sort_by_dfs
+    n::Int64 = le |> length
+    matrizrutas::Array{Int64,2} = mat |> matriz_rutas
+    tmp::Array{Int64,1} = copy(le)
+
+    for _ in 1:pasos
+        p = rand([0,1])
+        if p == 0
+            i,j = aristarandom(n)
+
+            t = tmp[i]
+            tmp[i] = tmp[j]
+            tmp[j] = t
+
+            if islinearextension(matrizrutas, tmp)
+                le = copy(tmp)
+            end
+        else
+            continue
+        end
+    end
+    le
+end
+
+function islinearextension(mat::Array{Int64,2} #= matriz de rutas =#, lista::Array{Int64,1})
+    n::Int64 = lista |> length
+
+    for i in 1:n-1, j in i+1:n
+        if mat[lista[j], lista[i]] == 1
+            return false
+        end
+    end
+
+    return true
 end
