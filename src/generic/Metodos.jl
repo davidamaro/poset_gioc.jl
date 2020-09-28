@@ -592,6 +592,19 @@ function posicionvarianza(listarankings::Array{Array{Int64,1},1},m::Int64)
     sqrt(sum(collect(1:n).^2 .* (posicionesm/length(listarankings))) - (sum(collect(1:n) .* (posicionesm/length(listarankings))))^2)
 end
 
+@doc Markdown.doc"""
+    pearson(r1::Array{Int64,1}, r2::Array{Int64,1})
+> Calcula el coeficiente de Pearson entre dos rankings.
+> $d(i) = R_1(i) - R_2(i)$ en donde $R_j(i)$  es la posicion del nodo i en el ranking j.
+> El coeficiente es calculado como $6 \Sigma/(n (n^2 -1))$, con $\Sigma = \sum d^2$.
+
+# Examples:
+```
+julia> r1 = [1,2,3]
+julia> r2 = [2,1,3]
+julia> pearson(r1,r2)
+```
+"""
 function pearson(r1::Array{Int64,1}, r2::Array{Int64,1})
     len::Int64 = r1 |> length
     6*sum([(sortperm(r1)[i] - sortperm(r2)[i])^2 for i in 1:len])/(len*(len^2 - 1))

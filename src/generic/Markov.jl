@@ -181,6 +181,18 @@ function listaposetsaleatorios(n::Int64, steps::Int64; m::Int64 = n^2)
   lista_posetsrandom
 end
 
+@doc Markdown.doc"""
+    encontrarminimo(mat::Array{Float64,2},n::Int64, tope::Int64)
+
+> Utilizado un numero de pruebas `tope` encuentra el minimo usando 
+> posets aleatorios generados usando `caminata_poset`.
+
+# Examples:
+```
+julia> mat = [0.3, 0.3 0.0 0.0; 0.0 0.0 0.0 0.0; 0.0 0.0 0.0 0.0; 0.0 0.0 0.0 0.0];
+julia> encontrarminimo(mat, 4, 100)
+```
+"""
 function encontrarminimo(mat::Array{Float64,2},n::Int64, tope::Int64)
     minimo::Float64 = 100.
     bono::SparseMatrixCSC{Int64,Int64} = caminata_poset(n, n^2)
@@ -195,6 +207,17 @@ function encontrarminimo(mat::Array{Float64,2},n::Int64, tope::Int64)
     minimo, bono
 end
 
+
+@doc Markdown.doc"""
+    caminatale(mat::Array{Int64,1}, pasos::Int64)
+> Return a random linear extension as an Array{Int64,1}.
+
+# Example
+```
+julia> mat = [0 1 1; 0 0 0; 0 0 0]
+julia> caminatale(mat, 200)
+```
+"""
 function caminatale(mat::Array{Int64,2}, pasos::Int64)
     le::Array{Int64,1} = mat |> DiGraph |> topological_sort_by_dfs
     n::Int64 = le |> length
