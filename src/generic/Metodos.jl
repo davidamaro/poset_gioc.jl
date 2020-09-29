@@ -9,6 +9,7 @@ export determinar_minimos
 export derecha_abajo
 export posicionpromedio, posicionvarianza
 export pearson
+export sensibilidad
 
 import Statistics: mean
 import Combinatorics: permutations
@@ -607,5 +608,33 @@ julia> pearson(r1,r2)
 """
 function pearson(r1::Array{Int64,1}, r2::Array{Int64,1})
     len::Int64 = r1 |> length
-    6*sum([(sortperm(r1)[i] - sortperm(r2)[i])^2 for i in 1:len])/(len*(len^2 - 1))
+    1 - 6*sum([(sortperm(r1)[i] - sortperm(r2)[i])^2 for i in 1:len])/(len*(len^2 - 1))
+end
+
+@doc Markdown.doc"""
+    sensibilidad(rankingscompleto::Array{Array{Int64,1},1}, rankingsincompleto::Array{Array{Int64,1},1})
+> Calcula el coeficiente de Pearson entre dos rankings.
+> $d(i) = R_1(i) - R_2(i)$ en donde $R_j(i)$  es la posicion del nodo i en el ranking j.
+> El coeficiente es calculado como $6 \Sigma/(n (n^2 -1))$, con $\Sigma = \sum d^2$.
+
+# Examples:
+```
+julia> r1 = [[1,2,3], [1,3,2], [3,1,2]]
+julia> r2 = [[1,2,3], [1,3,2]]
+julia> sensibilidad(r1,r2)
+```
+"""
+function sensibilidad(rankingscompleto::Array{Array{Int64,1},1}, rankingsincompleto::Array{Array{Int64,1},1})
+    mat1::Array{Int64,2} = matriz_interseccion_rankings(rankingscompleto)
+    mat2::Array{Int64,2} = matriz_interseccion_rankings(rankingsincompleto)
+    len::Int64 = length(mat1)
+    suma::Int64 = 0
+
+    for i in 1:len
+        if (mat1[i] == 1) ⊻ (mat2[i] == 1)
+            suma += 1
+        end
+    end
+
+    suma
 end
