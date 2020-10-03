@@ -2,6 +2,7 @@ using Posets, Test
 import LightGraphs: DiGraph
 import SparseArrays: spzeros
 import StatsBase: countmap
+import LinearAlgebra: norm
 
 @testset "energia local" begin
     @test energia_local([1,2,3], lista_posets_3[2]) == 0
@@ -160,4 +161,9 @@ end
 @testset "varianza y promedio de posicion" begin
     @test posicionpromedio([[1,2,3], [1,3,2]], 1) ≈ 1.0
     @test posicionvarianza([[1,2,3], [1,3,2]], 1) ≈ 0.0
+end
+
+@testset "probando la transitividad iterativa" begin
+  banano = [1. 1. 1.; .214 1. .71; .27 .91 1.]
+  @test norm(iteraciontransitiva(banano) - [1. 1. 1.; .27 1. .71; .27 .91 1.]) < 10^(-5)
 end
