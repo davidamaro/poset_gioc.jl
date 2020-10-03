@@ -10,6 +10,7 @@ export derecha_abajo
 export posicionpromedio, posicionvarianza
 export pearson
 export sensibilidad
+export generarmatriz, iteraciontransitiva, convertidor
 
 import Statistics: mean
 import Combinatorics: permutations
@@ -637,4 +638,57 @@ function sensibilidad(rankingscompleto::Array{Array{Int64,1},1}, rankingsincompl
     end
 
     suma
+end
+
+function convertidor(lista::Array{Int64,1})
+    uno = lista |> copy
+    n::Int64 = uno |> length
+    @simd for i in eachindex(uno)
+        @inbounds uno[i] = n + 1 - uno[i]
+    end
+    uno
+end
+function convertidor(lista::Array{Array{Int64,1},1})
+    convertidor.(lista)
+end
+function convertidor!(uno::Array{Int64,1})
+    n::Int64 = uno |> length
+    @simd for i in eachindex(uno)
+        @inbounds uno[i] = n + 1 - uno[i]
+    end
+    uno
+end
+
+function convertidor!(lista::Array{Array{Int64,1},1})
+    convertidor!.(lista)
+end
+
+function generarmatriz(listarankings::Array{Array{Int64,1},1})
+    n = listarankings[1] |> length
+    #listarankings = sortperm.(listarankings)
+    ordenados = convertidor(listarankings)
+    mat = zeros(Float64, n, n)
+    for i in 1:n, j in 1:n
+        @inbounds mat[i,j] = porranking(i,j, ordenados)
+    end
+    mat
+end
+
+function porranking(a::Int64,b::Int64,ordenados::Array{Array{Int64,1},1})
+    #ordenados = sortperm.(listarankings)
+    sum([min(x[a], x[b]) for x in ordenados])/sum([x[a] for x in ordenados])
+end
+
+function iteraciontransitiva(input)
+    mat = input |> similar
+    n,_ = size(input)
+    listplaceholder = zeros(Float64, n)
+    for x in 1:n, y in 1:n
+        listplaceholder = zeros(Float64, n)
+        for w in 1:n
+            listplaceholder[w] = min(input[x,w], input[w,y])
+        end
+        mat[x,y] = maximum(listplaceholder)
+    end
+    mat
 end
