@@ -11,6 +11,7 @@ export posicionpromedio, posicionvarianza
 export pearson
 export sensibilidad
 export generarmatriz, iteraciontransitiva, convertidor
+export filter
 
 import Statistics: mean
 import Combinatorics: permutations
@@ -689,6 +690,23 @@ function iteraciontransitiva(input)
             listplaceholder[w] = min(input[x,w], input[w,y])
         end
         mat[x,y] = maximum(listplaceholder)
+    end
+    mat
+end
+
+function Base.filter(predicado, mat::Array{Int64,2})
+    for i in eachindex(mat)
+        if !predicado(mat[i])
+            mat[i] = 0.0
+        end
+    end
+    mat
+end
+function Base.filter(predicado, mat::Array{Float64,2})
+    for i in eachindex(mat)
+        if !predicado(mat[i])
+            mat[i] = 0.0
+        end
     end
     mat
 end
