@@ -167,3 +167,10 @@ end
   banano = [1. 1. 1.; .214 1. .71; .27 .91 1.]
   @test norm(iteraciontransitiva(banano) - [1. 1. 1.; .27 1. .71; .27 .91 1.]) < 10^(-5)
 end
+
+@testset "coeficiente de correlacion" begin
+  @test pearson([1,2,3],[1,3,2])         ≈ 1/2
+  @test pearson([1,2,3,4],[1,3,2,4])     ≈ 12/15
+  @test pearson([1,2,3,4,5],[1,3,2,4,5]) ≈ 9/10
+  @test pearson([1,2,3,4],[3,2,1,4])     ≈ 1/5
+end
