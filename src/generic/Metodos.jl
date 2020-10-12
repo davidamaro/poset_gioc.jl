@@ -12,6 +12,7 @@ export pearson
 export sensibilidad
 export generarmatriz, iteraciontransitiva, convertidor
 export filter
+export numeroincompatibilidades, gradocoincidencia1
 
 import Statistics: mean
 import Combinatorics: permutations
@@ -709,4 +710,20 @@ function Base.filter(predicado, mat::Array{Float64,2})
         end
     end
     mat
+end
+
+function numeroincompatibilidades(mat::Array{Int64,2})
+    incom = 0
+    n,_=size(mat)
+    for i in 1:n-1, j in i+1:n
+        if mat[i,j]+mat[j,i] != 1
+            incom +=1
+        end
+    end
+    incom
+end
+function gradocoincidencia1(listaranks)
+    @assert length(listaranks) == 2
+    n = listaranks[1] |> length
+    1 - (matriz_interseccion_rankings(listaranks) |> numeroincompatibilidades)/binomial(n,2)
 end

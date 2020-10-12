@@ -174,3 +174,9 @@ end
   @test pearson([1,2,3,4,5],[1,3,2,4,5]) ≈ 9/10
   @test pearson([1,2,3,4],[3,2,1,4])     ≈ 1/5
 end
+
+@testset "coeficiente de comparabilidad" begin
+  @test matriz_interseccion_rankings([[1,2,3], [1,3,2]]) |> matriz_rutas |> numeroincompatibilidades == 1
+  @test matriz_interseccion_rankings([[1,2,3,4,5], [1,2,4,5,3]]) |> matriz_rutas |> numeroincompatibilidades == 2
+end
+

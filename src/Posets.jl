@@ -30,7 +30,7 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   isacyclic, caminata_poset, listaposetsaleatorios,
                   graficacolor, encontrarminimo, posicionpromedio, posicionvarianza, pearson,
                   caminatale, sensibilidad, generarmatriz, iteraciontransitiva, convertidor,
-                  filter
+                  filter, numeroincompatibilidades, gradocoincidencia1
 
 export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
@@ -59,5 +59,6 @@ export caminatale
 export sensibilidad
 export generarmatriz, iteraciontransitiva, convertidor
 export filter
+export numeroincompatibilidades, gradocoincidencia1
 
 end #module
