@@ -216,6 +216,9 @@ end
 ```
 julia> mat = [0 1 1; 0 0 0; 0 0 0]
 julia> caminatale(mat, 200)
+
+julia> posetaleatorio = caminata_poset(3,200)
+julia> linext_aleatoria = posetaleatorio |> Array |> x->caminatale(x, 200)
 ```
 """
 function caminatale(mat::Array{Int64,2}, pasos::Int64)
