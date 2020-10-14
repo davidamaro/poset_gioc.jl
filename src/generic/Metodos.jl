@@ -13,8 +13,9 @@ export sensibilidad
 export generarmatriz, iteraciontransitiva, convertidor
 export filter
 export numeroincompatibilidades, gradocoincidencia1
+export m2, m3, pareja_matrizadyacencia
 
-import Statistics: mean
+import Statistics: mean, median
 import Combinatorics: permutations
 import Base.+
 import LinearAlgebra: norm
@@ -726,4 +727,52 @@ function gradocoincidencia1(listaranks)
     @assert length(listaranks) == 2
     n = listaranks[1] |> length
     1 - (matriz_interseccion_rankings(listaranks) |> numeroincompatibilidades)/binomial(n,2)
+end
+
+## metodos m₂ y m₃
+
+function m2(listarankings)
+    n = listarankings[1] |> length
+    mat = zeros(Float64, n,listarankings |> length)
+    output = zeros(Float64,n,2)
+    for (i,l) in enumerate( listarankings )
+        mat[:,i] = [1/x for x in sortperm(l)]
+    end
+    for i in 1:n
+        x,y = extrema(mat[i,:]) 
+        output[i,1] = y
+        output[i,2] = x
+    end
+    output
+end
+
+function m3(listarankings)
+    n = listarankings[1] |> length
+    mat = zeros(Float64, n,listarankings |> length)
+    output = zeros(Float64,n,3)
+    for (i,l) in enumerate( listarankings )
+        mat[:,i] = [1/x for x in sortperm(l)]
+    end
+    for i in 1:n
+        x,y = extrema(mat[i,:]) 
+        m = median(mat[i,:])
+        output[i,1] = y
+        output[i,2] = m
+        output[i,3] = x
+    end
+    output
+end
+
+function pareja_matrizadyacencia(matrizparejas)
+    n,_ = size(matrizparejas)
+    output = zeros(Int64, n,n)
+    for i in 1:n, j in 1:n
+        if i == j
+            continue
+        end
+        if all(matrizparejas[i,:] .>= matrizparejas[j,:]) && !all(matrizparejas[i,:] .== matrizparejas[j,:])
+            output[i,j] = 1
+        end
+    end
+    output
 end
