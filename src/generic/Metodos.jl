@@ -13,7 +13,7 @@ export sensibilidad
 export generarmatriz, iteraciontransitiva, convertidor
 export filter
 export numeroincompatibilidades, gradocoincidencia1
-export m2, m3, pareja_matrizadyacencia
+export m², m³, pareja_matrizadyacencia
 
 import Statistics: mean, median
 import Combinatorics: permutations
@@ -731,12 +731,18 @@ end
 
 ## metodos m₂ y m₃
 
-function m2(listarankings)
+function m²(listarankings; alter::Bool = false)
     n = listarankings[1] |> length
     mat = zeros(Float64, n,listarankings |> length)
     output = zeros(Float64,n,2)
-    for (i,l) in enumerate( listarankings )
-        mat[:,i] = [1/x for x in sortperm(l)]
+    if !alter
+      for (i,l) in enumerate( listarankings )
+          mat[:,i] = [1/x for x in sortperm(l)]
+      end
+    else
+      for (i,l) in enumerate( listarankings )
+          mat[:,i] = [n-x for x in sortperm(l)]
+      end
     end
     for i in 1:n
         x,y = extrema(mat[i,:]) 
@@ -746,12 +752,18 @@ function m2(listarankings)
     output
 end
 
-function m3(listarankings)
+function m³(listarankings; alter::Bool = false)
     n = listarankings[1] |> length
     mat = zeros(Float64, n,listarankings |> length)
     output = zeros(Float64,n,3)
-    for (i,l) in enumerate( listarankings )
-        mat[:,i] = [1/x for x in sortperm(l)]
+    if !alter
+      for (i,l) in enumerate( listarankings )
+          mat[:,i] = [1/x for x in sortperm(l)]
+      end
+    else
+      for (i,l) in enumerate( listarankings )
+          mat[:,i] = [n - x for x in sortperm(l)]
+      end
     end
     for i in 1:n
         x,y = extrema(mat[i,:]) 
