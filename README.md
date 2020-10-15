@@ -1,5 +1,6 @@
 # Posets for GIOC
 [![Build Status](https://travis-ci.com/davidamaro/poset_gioc.jl.svg?token=NJQ4BsrHkfempbK4Saqb&branch=master)](https://travis-ci.com/davidamaro/poset_gioc.jl)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/davidamaro/poset_gioc.jl/notebook)
 
 'poset' actualmente cuenta con soporte para:
 
