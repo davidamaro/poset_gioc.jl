@@ -13,7 +13,7 @@ export sensibilidad
 export generarmatriz, iteraciontransitiva, convertidor
 export filter
 export numeroincompatibilidades, gradocoincidencia1
-export m², m³, pareja_matrizadyacencia
+export m², m³, pareja_matrizadyacencia, mn
 
 import Statistics: mean, median
 import Combinatorics: permutations
@@ -771,6 +771,30 @@ function m³(listarankings; alter::Bool = false)
         output[i,1] = y
         output[i,2] = m
         output[i,3] = x
+    end
+    output
+end
+
+function mn(listarankings; alter::Bool = false)
+    n = listarankings[1] |> length
+    mat = zeros(Float64, n,listarankings |> length)
+    output = zeros(Float64,n,listarankings |> length)
+    if !alter
+      for (i,l) in enumerate( listarankings )
+          mat[:,i] = [1/x for x in sortperm(l)]
+      end
+    else
+      for (i,l) in enumerate( listarankings )
+          mat[:,i] = [n - x for x in sortperm(l)]
+      end
+    end
+    for i in 1:n
+#        x,y = extrema(mat[i,:]) 
+#        m = median(mat[i,:])
+#        output[i,1] = y
+#        output[i,2] = m
+#        output[i,3] = x
+        output[i,:] .= mat[i,:]
     end
     output
 end
