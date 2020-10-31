@@ -15,6 +15,7 @@ export filter
 export numeroincompatibilidades, gradocoincidencia1
 export m², m³, pareja_matrizadyacencia, mn
 export fuzzy
+export equivalencias, membresia
 
 import Statistics: mean, median
 import Combinatorics: permutations
@@ -821,4 +822,51 @@ function fuzzy(p)
         matfuzzy[i,j] = sum([min(p[i,k], p[j,k]) for k in 1:m])/sum([p[j,k] for k in 1:m])
     end
     matfuzzy
+end
+
+@doc Markdown.doc"""
+equivalencia(matriz de propiedades calculada con mn)
+calcula las clases de equivalencia usando la matriz
+de propiedades. Usa sort.
+"""
+function equivalencias(propiedades)
+    numnodos, numpropo = propiedades |> size
+    listasimilaridades::Array{Array{Int,1},1} = [Int[] for _ in 1:numnodos]
+    for i in 1:numnodos
+        for j in 1:numnodos
+            if norm( sort(propiedades[i,:] )- sort(propiedades[j,:] )) < 10^(-5)
+                push!(listasimilaridades[i], j)
+            end
+        end
+    end
+    unique(sort.(listasimilaridades))
+end
+
+@doc Markdown.doc"""
+membresia(extension lineal, poset en forma de matriz de adyacencia)
+calcula el grado de membresia de una extension lineal con respecto
+a un fuzzy poset.
+"""
+function membresia(el, mposet)
+    n, _ = size(mposet)
+    @assert n == length(el)
+    or = el |> sortperm
+    tope = 0.
+    for u in 1:n, v in 1:n
+        if u == v
+            continue
+        end
+    #for u in 1:n, v in u+1:n
+        este =min(mposet[u,v], 1 - (or[u] < or[v]) )
+        #@show este, mposet[u,v]
+        if tope < este
+            tope = este
+        end
+        if tope ≈ 1.
+            return 0
+        end
+    end
+
+    1-tope
+    #tope
 end
