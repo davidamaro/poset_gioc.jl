@@ -14,6 +14,7 @@ export generarmatriz, iteraciontransitiva, convertidor
 export filter
 export numeroincompatibilidades, gradocoincidencia1
 export m², m³, pareja_matrizadyacencia, mn
+export fuzzy
 
 import Statistics: mean, median
 import Combinatorics: permutations
@@ -811,4 +812,13 @@ function pareja_matrizadyacencia(matrizparejas)
         end
     end
     output
+end
+
+function fuzzy(p)
+    n,m = size(p)
+    matfuzzy = zeros(Float64, n,n)
+    for i in 1:n, j in 1:n
+        matfuzzy[i,j] = sum([min(p[i,k], p[j,k]) for k in 1:m])/sum([p[j,k] for k in 1:m])
+    end
+    matfuzzy
 end
