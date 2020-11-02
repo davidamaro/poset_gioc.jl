@@ -8,5 +8,6 @@ include("generic/Derivadas.jl")
 include("generic/ListaPosets.jl")
 include("generic/Graficas.jl")
 include("generic/Markov.jl")
+include("generic/Fuzzy.jl")
 
 end #Generic
