@@ -1,1 +1,5 @@
 docs/
+notebooks/figs/
+notebooks/data/
+notebooks/data-metro/
+notebooks/.ipynb_checkpoints/
