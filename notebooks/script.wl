@@ -16,10 +16,8 @@ Funciones de ayuda: final
 
 Quiet[<<Combinatorica`];
 fileName = $ScriptCommandLine[[2]]
-Print["size: ", Length@$ScriptCommandLine]
 If[Length@$ScriptCommandLine > 2,
 names = final/@Import[$ScriptCommandLine[[3]], "List"];
-Print[names];
 ]
 ll = StringLength[fileName]
 exportName = StringTake[fileName, ll - 3]<>"png"
