@@ -581,6 +581,14 @@ function derecha_abajo(test,lista)
     indice
 end
 
+"""
+```
+posicionpromedio(listarankings::Array{Array{Int64,1},1},m::Int64)
+```
+listarankings es una lista enteros, correspondiente a los rankings.
+m es un entero, que corresponde al nodo del que se interesa calcular
+la posicion promedio.
+"""
 function posicionpromedio(listarankings::Array{Array{Int64,1},1},m::Int64)
     n::Int64 = length(listarankings[1])
     posicionesm::Array{Int64,1} = zeros(Int,n)
@@ -590,6 +598,14 @@ function posicionpromedio(listarankings::Array{Array{Int64,1},1},m::Int64)
     sum(collect(1:n) .* (posicionesm/length(listarankings)))
 end
 
+"""
+```
+posicionvarianza(listarankings::Array{Array{Int64,1},1},m::Int64)
+```
+listarankings es una lista enteros, correspondiente a los rankings.
+m es un entero, que corresponde al nodo del que se interesa calcular
+la varianza de su posicion.
+"""
 function posicionvarianza(listarankings::Array{Array{Int64,1},1},m::Int64)
     n::Int64 = length(listarankings[1])
     posicionesm::Array{Int64,1} = zeros(Int,n)
