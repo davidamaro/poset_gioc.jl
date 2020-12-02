@@ -835,7 +835,12 @@ function fuzzy(p)
     n,m = size(p)
     matfuzzy = zeros(Float64, n,n)
     for i in 1:n, j in 1:n
-        matfuzzy[i,j] = sum([min(p[i,k], p[j,k]) for k in 1:m])/sum([p[j,k] for k in 1:m])
+        hh = sum([p[j,k] for k in 1:m])
+        if hh ≈ 0.0
+          matfuzzy[i,j] = 1.0
+        else
+          matfuzzy[i,j] = sum([min(p[i,k], p[j,k]) for k in 1:m])/hh
+        end
     end
     matfuzzy
 end
