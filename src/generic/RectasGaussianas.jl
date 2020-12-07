@@ -1,3 +1,4 @@
+import Distributions: MvNormal
 export generapuntuaciones_gaussian
 
 @doc Markdown.doc"""
