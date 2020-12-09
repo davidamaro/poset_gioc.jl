@@ -29,12 +29,16 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   derecha_abajo,
                   isacyclic, caminata_poset, listaposetsaleatorios,
                   graficacolor, encontrarminimo, posicionpromedio, posicionvarianza, pearson,
+<<<<<<< Updated upstream
                   caminatale, sensibilidad, generarmatriz, iteraciontransitiva, convertidor,
                   filter, numeroincompatibilidades, gradocoincidencia1, m², m³, pareja_matrizadyacencia, mn,
                   fuzzy, membresia, equivalencias, Σcount, fentropia, fs,
                   αcut_poset, permpuntuaciones, m3, m2,
                   generapuntuaciones_gaussian
 
+=======
+                  caminatale, sensibilidad, generarmatriz, iteraciontransitiva, convertidor
+>>>>>>> Stashed changes
 
 export energia_por_pasos_p, energia_adhoc, energia_local
 export energia_no_local, energia_trucada, energia_por_pasos
