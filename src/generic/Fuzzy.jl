@@ -22,7 +22,8 @@ end
 fentropia(x) = fs(funion(x,finverso(x)), finter(x, finverso(x)))
 
 function αcut_poset(poset, α)
-    a = filter(x -> x > α, poset)
+    copia = copy(poset)
+    a = filter(x -> x > α, copia)
     n,_ = size(a)
     b = zeros(Int, n,n)
     for i in 1:n, j in i+1:n
