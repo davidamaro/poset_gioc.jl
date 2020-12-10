@@ -1,5 +1,6 @@
 import Distributions: MvNormal
 export generapuntuaciones_gaussian
+export comparativaruidosa
 
 @doc Markdown.doc"""
 `function randomsphere_point(n)`
@@ -94,14 +95,14 @@ end
 julia > matrizposet()
 ```
 """
-function matrizposet(lista)
+function matrizposet(lista, metodo)
     dim, cantidadpuntos = size(lista)
     mat = zeros(Int64, cantidadpuntos,cantidadpuntos)
     for i in 1:cantidadpuntos, j in 1:cantidadpuntos
         if i == j
             continue
         end
-        mat[i,j] = minicomparativa(lista[:,i], lista[:,j])
+        mat[i,j] = metodo(lista[:,i], lista[:,j])
     end
     mat
 end
@@ -119,15 +120,31 @@ end
 julia > generapuntuaciones_gaussian(numerorankings, numeronodos, dim)
 ```
 """
-function generapuntuaciones_gaussian(numerorankings, numeronodos, dim)
+function generapuntuaciones_gaussian(numerorankings, numeronodos, dim; ruido::Bool = false)
 
     listapuntos = [randomsphere_point(dim) for _ in 1:numerorankings];
 
     puntosnodos = rand(MvNormal([0 for _ in 1:dim],1),numeronodos);
 
-    comparar = (matrizposet(puntosnodos))
+    if !ruido
+      comparar = (matrizposet(puntosnodos, minicomparativa))
+    else
+      comparar = (matrizposet(puntosnodos, comparativaruidosa))
+    end
 
     bloquenormalizado = [[proporcion(puntosnodos[:,i], j) for i in 1:numeronodos] |> normalizacion for j in listapuntos];
 
     comparar, hcat(bloquenormalizado...)
+end
+
+function comparativaruidosa(a::Float64, b::Float64)
+    x,y = [randn() for _ in 1:2]
+    a + x <= b + y
+end
+function comparativaruidosa(a::Array{Float64,1}, b::Array{Float64,1})
+    n = length(a)
+    @assert n == length(b)
+
+    x,y = rand(MvNormal([0 for _ in 1:n],1),2)
+    all((a .+ x) .<= (b .+ y))
 end
