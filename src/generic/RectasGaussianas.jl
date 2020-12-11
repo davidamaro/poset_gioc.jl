@@ -1,6 +1,7 @@
 import Distributions: MvNormal
 export generapuntuaciones_gaussian
 export comparativaruidosa
+export matrizposet
 
 @doc Markdown.doc"""
 `function randomsphere_point(n)`
@@ -120,7 +121,7 @@ end
 julia > generapuntuaciones_gaussian(numerorankings, numeronodos, dim)
 ```
 """
-function generapuntuaciones_gaussian(numerorankings, numeronodos, dim; ruido::Bool = false)
+function generapuntuaciones_gaussian(numerorankings, numeronodos, dim; ruido::Bool = false, covmat = 1)
 
     listapuntos = [randomsphere_point(dim) for _ in 1:numerorankings];
 
@@ -128,6 +129,10 @@ function generapuntuaciones_gaussian(numerorankings, numeronodos, dim; ruido::Bo
 
     if !ruido
       comparar = (matrizposet(puntosnodos, minicomparativa))
+    elseif ruido && covmat != 1
+      @assert size(covmat)[2] == dim
+      metodo = (x,y) -> comparativaruidosa(x,y,covmat=covmat)
+      comparar = (matrizposet(puntosnodos, metodo))
     else
       comparar = (matrizposet(puntosnodos, comparativaruidosa))
     end
@@ -141,10 +146,10 @@ function comparativaruidosa(a::Float64, b::Float64)
     x,y = [randn() for _ in 1:2]
     a + x <= b + y
 end
-function comparativaruidosa(a::Array{Float64,1}, b::Array{Float64,1})
+function comparativaruidosa(a::Array{Float64,1}, b::Array{Float64,1}; covmat = 1)
     n = length(a)
     @assert n == length(b)
 
-    x,y = rand(MvNormal([0 for _ in 1:n],1),2)
+    x,y = rand(MvNormal([0 for _ in 1:n],covmat),2)
     all((a .+ x) .<= (b .+ y))
 end
