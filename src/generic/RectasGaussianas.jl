@@ -121,17 +121,17 @@ end
 julia > generapuntuaciones_gaussian(numerorankings, numeronodos, dim)
 ```
 """
-function generapuntuaciones_gaussian(numerorankings, numeronodos, dim; ruido::Bool = false, covmat = 1)
+function generapuntuaciones_gaussian(numerorankings, numeronodos, dim; ruido::Bool = false, covmat = 1, ncovmat = 1)
 
     listapuntos = [randomsphere_point(dim) for _ in 1:numerorankings];
 
-    puntosnodos = rand(MvNormal([0 for _ in 1:dim],1),numeronodos);
+    puntosnodos = rand(MvNormal([0 for _ in 1:dim],covmat),numeronodos);
 
     if !ruido
       comparar = (matrizposet(puntosnodos, minicomparativa))
     elseif ruido && covmat != 1
       @assert size(covmat)[2] == dim
-      metodo = (x,y) -> comparativaruidosa(x,y,covmat=covmat)
+      metodo = (x,y) -> comparativaruidosa(x,y,covmat=ncovmat)
       comparar = (matrizposet(puntosnodos, metodo))
     else
       comparar = (matrizposet(puntosnodos, comparativaruidosa))
