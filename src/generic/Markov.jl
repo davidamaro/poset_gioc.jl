@@ -11,6 +11,10 @@ function complement(x::Array{Int64,1}, y::Array{Int64,1})
     filter(z -> (in(z, x) && !in(z, y)), todos)
 end
 
+function isacyclic(mat::Array{Int64,2})
+  helper = mat |> SparseMatrixCSC
+  isacyclic!(helper)
+end
 function isacyclic!(mat::SparseMatrixCSC{Int64,Int64})
     len = mat.n
     nodos = 1:len |> collect
