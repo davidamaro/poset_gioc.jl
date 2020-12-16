@@ -122,22 +122,28 @@ julia > generapuntuaciones_gaussian(numerorankings, numeronodos, dim)
 ```
 """
 function generapuntuaciones_gaussian(numerorankings, numeronodos, dim;
-                                     ruido::Bool = false, matnodos = 1, matruido = 1)
+                                     safe::Bool = false,ruido::Bool = false, matnodos = 1, matruido = 1)
 
     listapuntos = [randomsphere_point(dim) for _ in 1:numerorankings];
 
     puntosnodos = rand(MvNormal([0 for _ in 1:dim],matnodos),numeronodos);
 
     if !ruido
-      comparar = (matrizposet(puntosnodos, minicomparativa))
+      posetdepuntos = (matrizposet(puntosnodos, minicomparativa))
     else
       metodo = (x,y) -> comparativaruidosa(x,y,matruido=matruido)
-      comparar = (matrizposet(puntosnodos, metodo))
+      posetdepuntos = (matrizposet(puntosnodos, metodo))
+    end
+
+    if safe
+      if !(posetdepuntos |> isacyclic)
+        throw(error("no es un poset"))
+      end
     end
 
     bloquenormalizado = [[proporcion(puntosnodos[:,i], j) for i in 1:numeronodos] |> normalizacion for j in listapuntos];
 
-    comparar, hcat(bloquenormalizado...)
+    posetdepuntos, hcat(bloquenormalizado...)
 end
 
 function comparativaruidosa(a::Float64, b::Float64)
