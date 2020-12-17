@@ -87,10 +87,14 @@ function minicomparativa(p,q)
 end
 
 @doc Markdown.doc"""
-`function matrizposet(lista)`
+`function matrizposet(lista, metodo)`
   calcula el _poset de puntos_, es decir, recibe una lista
   de puntos que compara coordenada a coordenada. Si todos son mayores
   o iguales, se establece un enlace.
+
+  * `lista`, lista que contiene los puntos a comparar.
+  * `metodo`, funcion con dos argumentos que lleva a cabo la comparativa para generar
+    el poset de puntos. Ruido o sin ruido, son las opciones presentes.
 # Ejemplo
 ```
 julia > matrizposet()
@@ -109,16 +113,23 @@ function matrizposet(lista, metodo)
 end
 
 @doc Markdown.doc"""
-`function generapuntuaciones_gaussian(numerorankings, numeronodos, dim)`
+```
+function generapuntuaciones_gaussian(numerorankings, numeronodos, dim;
+                                     safe::Bool = false,ruido::Bool = false, matnodos = 1, matruido = 1)
+```
   Calcula el _poset de puntos_ y las puntuaciones.
-  1. `numerorankings` es el numero de rankings que se generara. Denota el 
+  * `numerorankings` es el numero de rankings que se generara. Denota el 
     numero de rectas usadas.
-  2. `numeronodos` numero de nodos a usar. Corresponde al numero de
+  * `numeronodos` numero de nodos a usar. Corresponde al numero de
     puntos gaussianos que se usan.
-  3. `dim` es la dimension de los puntos a usar.
+  * `dim` es la dimension de los puntos a usar.
+  * `safe` flat que solicita arrojar una excepcion en case de que la variable `posetdepuntos` no sea un poset
+  * `ruido` flag que especifica si se va a usar ruido en la comparativa
+  * `matnodos` matriz de covarianza para la seleccion de puntos. Es aqui donde se puede introducir sesgo.
+  * `matruido` matriz de covarianza para la comparativa ruidosa.
 # Ejemplo
 ```
-julia > generapuntuaciones_gaussian(numerorankings, numeronodos, dim)
+julia > generapuntuaciones_gaussian(20,7,2)
 ```
 """
 function generapuntuaciones_gaussian(numerorankings, numeronodos, dim;
@@ -146,10 +157,21 @@ function generapuntuaciones_gaussian(numerorankings, numeronodos, dim;
     posetdepuntos, hcat(bloquenormalizado...)
 end
 
-function comparativaruidosa(a::Float64, b::Float64)
-    x,y = [randn() for _ in 1:2]
-    a + x <= b + y
-end
+
+@doc Markdown.doc"""
+`function comparativaruidosa(a::Array{Float64,1}, b::Array{Float64,1}; matruido = 1)`
+  Lleva a cabo una desigualdad entre dos vectores, en la que
+  a cada elemento se le suma un vector __gaussiano__.
+  Como argumento de la funcion se introduce una matriz de covarianza.
+  * `a` es un vector
+  * `b` es un vector
+  * `matruido` es una matriz de covarianza. Si no se deja nada, se utiliza la matriz identidad.
+# Ejemplo
+```
+julia > comparativaruidosa([1.,2.,3.], [2.,2.,3.]) # [1.,2.,3.] <= [2.,2.,3.]
+true
+```
+"""
 function comparativaruidosa(a::Array{Float64,1}, b::Array{Float64,1}; matruido = 1)
     n = length(a)
     @assert n == length(b)
