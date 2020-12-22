@@ -1,4 +1,4 @@
-import Distributions: MvNormal
+import Distributions: MvNormal, Normal
 export generapuntuaciones_gaussian
 export comparativaruidosa
 export matrizposet
@@ -133,7 +133,8 @@ julia > generapuntuaciones_gaussian(20,7,2)
 ```
 """
 function generapuntuaciones_gaussian(numerorankings, numeronodos, dim;
-                                     safe::Bool = false,ruido::Bool = false, matnodos = 1, matruido = 1)
+                                     safe::Bool = false,ruido::Bool = false, matnodos = 1, matruido = 1,
+                                     lousy::Float64 = 0.0)
 
     listapuntos = [randomsphere_point(dim) for _ in 1:numerorankings];
 
@@ -152,7 +153,13 @@ function generapuntuaciones_gaussian(numerorankings, numeronodos, dim;
       end
     end
 
-    bloquenormalizado = [[proporcion(puntosnodos[:,i], j) for i in 1:numeronodos] |> normalizacion for j in listapuntos];
+    if lousy!=zero(lousy)
+      println(lousy)
+      distribucionruido = Normal(0,lousy)
+      bloquenormalizado = [[proporcion(puntosnodos[:,i], j)+rand(distribucionruido) for i in 1:numeronodos] |> normalizacion for j in listapuntos];
+    else
+      bloquenormalizado = [[proporcion(puntosnodos[:,i], j) for i in 1:numeronodos] |> normalizacion for j in listapuntos];
+    end
 
     posetdepuntos, hcat(bloquenormalizado...)
 end
