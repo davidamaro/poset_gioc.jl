@@ -1,7 +1,8 @@
 import Distributions: MvNormal, Normal
 export generapuntuaciones_gaussian
 export comparativaruidosa
-export matrizposet
+export calculapdp
+
 
 @doc Markdown.doc"""
 `function randomsphere_point(n)`
@@ -87,7 +88,7 @@ function minicomparativa(p,q)
 end
 
 @doc Markdown.doc"""
-`function matrizposet(lista, metodo)`
+`function calculapdp(lista, metodo)`
   calcula el _poset de puntos_, es decir, recibe una lista
   de puntos que compara coordenada a coordenada. Si todos son mayores
   o iguales, se establece un enlace.
@@ -97,17 +98,17 @@ end
     el poset de puntos. Ruido o sin ruido, son las opciones presentes.
 # Ejemplo
 ```
-julia > matrizposet()
+julia > calculapdp()
 ```
 """
-function matrizposet(lista, metodo)
+function calculapdp(lista, metodo)
     dim, cantidadpuntos = size(lista)
     mat = zeros(Int64, cantidadpuntos,cantidadpuntos)
     for i in 1:cantidadpuntos, j in 1:cantidadpuntos
         if i == j
             continue
         end
-        mat[i,j] = metodo(lista[:,i], lista[:,j])
+        mat[i,j] = metodo(lista[:,j], lista[:,i])
     end
     mat
 end
@@ -141,10 +142,10 @@ function generapuntuaciones_gaussian(numerorankings, numeronodos, dim;
     puntosnodos = rand(MvNormal([0 for _ in 1:dim],matnodos),numeronodos);
 
     if !ruido
-      posetdepuntos = (matrizposet(puntosnodos, minicomparativa))
+      posetdepuntos = (calculapdp(puntosnodos, minicomparativa))
     else
       metodo = (x,y) -> comparativaruidosa(x,y,matruido=matruido)
-      posetdepuntos = (matrizposet(puntosnodos, metodo))
+      posetdepuntos = (calculapdp(puntosnodos, metodo))
     end
 
     if safe
@@ -154,7 +155,6 @@ function generapuntuaciones_gaussian(numerorankings, numeronodos, dim;
     end
 
     if lousy!=zero(lousy)
-      println(lousy)
       distribucionruido = Normal(0,lousy)
       bloquenormalizado = [[proporcion(puntosnodos[:,i], j)+rand(distribucionruido) for i in 1:numeronodos] |> normalizacion for j in listapuntos];
     else

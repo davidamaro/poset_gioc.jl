@@ -33,7 +33,7 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   filter, numeroincompatibilidades, gradocoincidencia1, m², m³, pareja_matrizadyacencia, mn,
                   fuzzy, membresia, equivalencias, Σcount, fentropia, fs,
                   αcut_poset, permpuntuaciones, m3, m2,
-                  generapuntuaciones_gaussian, comparativaruidosa, matrizposet
+                  generapuntuaciones_gaussian, comparativaruidosa, calculapdp,
 
 
 export energia_por_pasos_p, energia_adhoc, energia_local
@@ -68,6 +68,6 @@ export m², m³, pareja_matrizadyacencia, mn
 export fuzzy, equivalencias, membresia
 export Σcount, fentropia, fs
 export αcut_poset, permpuntuaciones, m3, m2
-export generapuntuaciones_gaussian, comparativaruidosa, matrizposet
+export generapuntuaciones_gaussian, comparativaruidosa, calculapdp
 
 end #module
