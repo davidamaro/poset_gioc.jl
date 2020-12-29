@@ -2,7 +2,11 @@ import Distributions: MvNormal, Normal
 export generapuntuaciones_gaussian
 export comparativaruidosa
 export calculapdp
+export obtenerranks_depuntuacion
 
+function obtenerranks_depuntuacion(puntuaciones::Array{Float64,2})
+    ranks = [sortperm(puntuaciones[:,x], rev = true) for x in 1:size(puntuaciones)[2]];
+end
 
 @doc Markdown.doc"""
 `function randomsphere_point(n)`
@@ -135,7 +139,7 @@ julia > generapuntuaciones_gaussian(20,7,2)
 """
 function generapuntuaciones_gaussian(numerorankings, numeronodos, dim;
                                      safe::Bool = false,ruido::Bool = false, matnodos = 1, matruido = 1,
-                                     lousy::Float64 = 0.0)
+                                     varerror::Float64 = 0.0)
 
     listapuntos = [randomsphere_point(dim) for _ in 1:numerorankings];
 
@@ -154,14 +158,26 @@ function generapuntuaciones_gaussian(numerorankings, numeronodos, dim;
       end
     end
 
-    if lousy!=zero(lousy)
-      distribucionruido = Normal(0,lousy)
+    if varerror!=zero(varerror)
+      distribucionruido = Normal(0,determinarerror(puntosnodos, varerror))
       bloquenormalizado = [[proporcion(puntosnodos[:,i], j)+rand(distribucionruido) for i in 1:numeronodos] |> normalizacion for j in listapuntos];
     else
       bloquenormalizado = [[proporcion(puntosnodos[:,i], j) for i in 1:numeronodos] |> normalizacion for j in listapuntos];
     end
 
     posetdepuntos, hcat(bloquenormalizado...)
+end
+
+function determinarerror(puntos, error)
+    _,n = size(puntos)
+    @assert (error > 0) && (error < 1)
+    listanormas = zeros(Float64, (n*(n-1))÷2)
+    interno = 1
+    for i in 1:n, j in i+1:n
+        listanormas[interno] = norm(puntos[:,i]-puntos[:,j])
+        interno += 1
+    end
+    mean(listanormas)*error
 end
 
 

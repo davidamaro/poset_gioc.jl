@@ -34,6 +34,7 @@ import .Generic:  energia_por_pasos_p, energia_adhoc, energia_local,
                   fuzzy, membresia, equivalencias, Σcount, fentropia, fs,
                   αcut_poset, permpuntuaciones, m3, m2,
                   generapuntuaciones_gaussian, comparativaruidosa, calculapdp,
+                  obtenerranks_depuntuacion
 
 
 export energia_por_pasos_p, energia_adhoc, energia_local
@@ -69,5 +70,6 @@ export fuzzy, equivalencias, membresia
 export Σcount, fentropia, fs
 export αcut_poset, permpuntuaciones, m3, m2
 export generapuntuaciones_gaussian, comparativaruidosa, calculapdp
+export obtenerranks_depuntuacion
 
 end #module
